@@ -1,0 +1,69 @@
+name: project_flutter
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the build number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.0 <4.0.0"
+
+# Dependencies specify other packages that your package needs in order to work.
+# You can manually update the versions or run `flutter pub upgrade`.
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker: ^0.8.5+3
+  provider: ^6.0.0
+  flutter_svg: ^1.0.0
+  cupertino_icons: ^1.0.2
+  get: ^4.6.6
+ 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+# Flutter section - contains important settings for Flutter-specific functionalities.
+flutter:
+
+
+  assets:
+    - assets/img/image.png
+    - assets/img/image_pemesanan.png
+    - assets/img/logo.png
+    - assets/img/Ratenggaro-village-in-Sumba-Explore-Sumba-island-villages-in-Indonesia-10.jpg
+    - assets/img/bali.png
+    - assets/img/lombok.jpg
+    - assets/img/91.png
+    - assets/img/gili-islands-digital-nomads.png
+    - assets/img/Lombok-to-Komodo-Island-4-Days-3-Night-Amazing-Trip.png
+    - assets/img/icons profile.svg
+    - assets/img/Chevron right.svg
+    - assets/img/Check circle.svg
+    - assets/img/Settings.svg
+    - assets/img/Credit card.svg
+    - assets/img/profile.svg
+    - assets/img/Search.svg
+    - assets/img/Home.svg
+    - assets/img/User.svg
+    - assets/img/Heart.svg
+    - assets/img/Send.svg
+    - assets/img/favorite.svg
+    - assets/img/star.svg
+    - assets/img/Map Pin.png
+    - assets/img/onboarding.png
+
+  fonts:
+    - family: WorkSans
+      fonts:
+        - asset: assets/font/WorkSans-Italic-VariableFont_wght.ttf
+        - asset: assets/font/WorkSans-VariableFont_wght.ttf
+        - asset: assets/font/Conamore Light.otf
+  uses-material-design: true
