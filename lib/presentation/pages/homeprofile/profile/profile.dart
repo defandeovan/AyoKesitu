@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:project_flutter/login.dart';
+import 'package:project_flutter/authcontroller.dart';
+import 'package:get/get.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -147,8 +151,98 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-             SizedBox(height: 20),
-             Container(
+            SizedBox(height: 20),
+            Container(
+              width: 295,
+              height: 80,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black.withOpacity(0.2),
+                ),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      'assets/img/Credit card.svg',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    'Payment Method',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'WorkSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      'assets/img/Chevron right.svg',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: 295,
+              height: 80,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black.withOpacity(0.2),
+                ),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      'assets/img/Check circle.svg',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    'Your Order',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'WorkSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 65,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      'assets/img/Chevron right.svg',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
                 width: 295,
                 height: 80,
                 decoration: BoxDecoration(
@@ -157,130 +251,36 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Credit card.svg',
-                        width: 40,
-                        height: 40,
-                      ),
+                child: Row(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      'assets/img/Settings.svg',
+                      width: 40,
+                      height: 40,
                     ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Payment Method',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'WorkSans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Chevron right.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 295,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.2),
                   ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Check circle.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Your Order',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'WorkSans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 65,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Chevron right.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 295,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.2),
+                  SizedBox(width: 20),
+                  Text(
+                    'Setting',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'WorkSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
                   ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Settings.svg',
-                        width: 40,
-                        height: 40,
-                      ),
+                  SizedBox(
+                    width: 95,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      'assets/img/Chevron right.svg',
+                      width: 40,
+                      height: 40,
                     ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Setting',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'WorkSans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 95,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Chevron right.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ]
-                )
-          
-              )// Lainnya tetap sama
+                  ),
+                ])) // Lainnya tetap sama
           ],
         ),
       ),
@@ -439,6 +439,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 },
                 child: Text(
                   "Save Changes",
+                  style: TextStyle(
+                      color: Color(0xffffffff),
+                      fontFamily: 'WorkSans',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: 200,
+              height: 43,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 15, 133, 29),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                ),
+                onPressed: () {
+                  AuthController authController = Get.find<AuthController>();
+                  authController.logout(); 
+                },
+                child: Text(
+                  "Logout",
                   style: TextStyle(
                       color: Color(0xffffffff),
                       fontFamily: 'WorkSans',

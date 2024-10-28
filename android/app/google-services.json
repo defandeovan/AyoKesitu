@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "983675880892",
+    "project_id": "ayokesituu",
+    "storage_bucket": "ayokesituu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983675880892:android:b949b8bb3e70855247d7b9",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-CxBQ5or2Z4wEw6WGIo6dbb3D4XA04vQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
