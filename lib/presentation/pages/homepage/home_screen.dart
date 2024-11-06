@@ -5,21 +5,7 @@ import 'package:project_flutter/presentation/pages/homeprofile/profile/profile.d
 import 'package:project_flutter/presentation/pages/pemesanan/pemesanan_page.dart';
 import 'package:provider/provider.dart'; // Import provider
 import 'package:get/get.dart'; //
-
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ProfileImage(), // Inisialisasi Provider
-      child: MaterialApp(
-        home: HomeScreen(),
-      ),
-    );
-  }
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Model untuk menyimpan status gambar profil
 class ProfileImage with ChangeNotifier {
@@ -34,19 +20,31 @@ class ProfileImage with ChangeNotifier {
 }
 
 class HomeScreen extends StatefulWidget {
+  final String userId;
+
+  // Tambahkan konstruktor untuk menerima userId
+  HomeScreen({required this.userId});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  late List<Widget> _widgetOptions;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeScreenBody(),
-    Placeholder(),
-    Placeholder(),
-    ProfilePage(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    // Inisialisasi _widgetOptions menggunakan widget.userId
+    _widgetOptions = <Widget>[
+      HomeScreenBody(),
+      Placeholder(),
+      Placeholder(),
+      ProfilePage(userId: widget.userId), // Gunakan widget.userId di sini
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -64,15 +62,13 @@ class _HomeScreenState extends State<HomeScreen> {
             Positioned(
               bottom: 0,
               left: (MediaQuery.of(context).size.width - 372) / 2,
-              
               child: Container(
                 width: 372,
                 height: 70, // Sesuaikan tinggi berdasarkan ukuran layar
                 margin: EdgeInsets.only(bottom: 30),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius:
-                      BorderRadius.circular(10), 
+                  borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12,
@@ -82,8 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      30), 
+                  borderRadius: BorderRadius.circular(30),
                   child: BottomNavigationBar(
                     items: [
                       BottomNavigationBarItem(
@@ -93,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration: BoxDecoration(
                             color: _selectedIndex == 0
                                 ? Color(0xfe00A550)
-                                : Colors.transparent, 
+                                : Colors.transparent,
                             shape: BoxShape.circle,
                           ),
                           child: Center(
@@ -134,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       BottomNavigationBarItem(
                         icon: Container(
-                            width: 35,
+                          width: 35,
                           height: 35,
                           decoration: BoxDecoration(
                             color: _selectedIndex == 2
@@ -156,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       BottomNavigationBarItem(
                         icon: Container(
-                            width: 35,
+                          width: 35,
                           height: 35,
                           decoration: BoxDecoration(
                             color: _selectedIndex == 3
@@ -378,7 +373,7 @@ class HomeScreenBody extends StatelessWidget {
     );
   }
 
-   Widget _buildRecommendationCard(Map<String, String> recommendation) {
+  Widget _buildRecommendationCard(Map<String, String> recommendation) {
     // Variabel untuk menyimpan status favorit
     bool isFavorite = false;
 
@@ -418,7 +413,8 @@ class HomeScreenBody extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.5),
-                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+                  borderRadius:
+                      BorderRadius.vertical(bottom: Radius.circular(12)),
                 ),
                 padding: EdgeInsets.all(8),
                 child: Column(
@@ -438,7 +434,8 @@ class HomeScreenBody extends StatelessWidget {
                     // Lokasi
                     Row(
                       children: [
-                        Image.asset('assets/img/Map Pin.png', width: 12, height: 12),
+                        Image.asset('assets/img/Map Pin.png',
+                            width: 12, height: 12),
                         SizedBox(width: 4),
                         Text(
                           recommendation["location"]!,
@@ -451,7 +448,8 @@ class HomeScreenBody extends StatelessWidget {
                     // Rating
                     Row(
                       children: [
-                        SvgPicture.asset('assets/img/star.svg', width: 12, height: 12),
+                        SvgPicture.asset('assets/img/star.svg',
+                            width: 12, height: 12),
                         SizedBox(width: 4),
                         Text(
                           recommendation['rating']!,
@@ -496,7 +494,10 @@ class HomeScreenBody extends StatelessWidget {
                     'assets/img/favorite.svg',
                     width: 24,
                     height: 24,
-                    color: isFavorite ? Colors.red : Colors.black, // Mengubah warna berdasarkan status favorit
+                    color: isFavorite
+                        ? Colors.red
+                        : Colors
+                            .black, // Mengubah warna berdasarkan status favorit
                   ),
                 ],
               ),
@@ -506,7 +507,6 @@ class HomeScreenBody extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildPopularActivities() {
     final popularActivities = [

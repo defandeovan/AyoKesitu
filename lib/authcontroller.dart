@@ -9,6 +9,7 @@ class AuthController extends GetxController {
   void logout() async {
     try {
       await _auth.signOut(); // Melakukan logout dari Firebase
+      // ignore: prefer_const_constructors
       Get.offAll(() => SignInScreen()); // Menghapus semua halaman dan kembali ke halaman Login
     } catch (e) {
       // Menangani kesalahan jika logout gagal

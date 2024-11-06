@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:project_flutter/presentation/pages/homeprofile/profile/profile.dart';
+import 'package:project_flutter/signin.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:project_flutter/presentation/pages/homepage/Home_Screen.dart';
-import 'package:project_flutter/SignUpScreen.dart'; // Import halaman registrasi
+// Import halaman registrasi
 
 // Handler untuk notifikasi latar belakang
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -21,7 +23,8 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // Tangani pesan saat aplikasi dalam keadaan terminated
-  RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  RemoteMessage? initialMessage =
+      await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
     _handleMessage(initialMessage);
   }
@@ -63,7 +66,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // Minta izin untuk notifikasi
   void _requestPermission() async {
-    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission();
+    NotificationSettings settings =
+        await FirebaseMessaging.instance.requestPermission();
     print('Pengguna memberikan izin: ${settings.authorizationStatus}');
   }
 
@@ -105,19 +109,25 @@ class _SignInScreenState extends State<SignInScreen> {
           .signInWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
       print("Signed in: ${userCredential.user?.email}");
-
+     
       // Menampilkan pesan keberhasilan login
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Login berhasil! Selamat datang, ${userCredential.user?.email}'),
-          backgroundColor: Colors.green,
+          content: Text(
+              'Login berhasil! Selamat datang, ${userCredential.user?.email}'),
+          // backgroundColor: Colors.green,
         ),
       );
+      //id user
+      String user = userCredential.user!.uid;
+      print("User ID: $user");
 
-      // Arahkan ke halaman utama setelah login berhasil
-      Navigator.pushReplacement(
+// Pindah ke HomeScreen dan kirimkan userId
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(userId: user),
+        ),
       );
     } on FirebaseAuthException catch (e) {
       String errorMessage;
@@ -157,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/img/bali.png', // Gantilah dengan lokasi gambar latar belakang
+            'assets/img/image 17.png', // Gantilah dengan lokasi gambar latar belakang
             fit: BoxFit.cover,
           ),
           Padding(
@@ -165,8 +175,22 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image.asset(
+                  'assets/img/logo.png',
+                  width: 150,
+                  height: 150,
+                ),
+                SizedBox(height: 5),
                 Text(
-                  'Ayo Kesitu!',
+                  'Travel with ease, Discover with Dave',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+                Spacer(),
+                Text(
+                  'Sign in now',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -225,7 +249,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     backgroundColor: Colors.green, // Warna tombol
                     minimumSize: Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                   child: Text('Sign In'),
@@ -244,7 +268,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     minimumSize: Size(double.infinity, 50),
                     side: BorderSide(color: Colors.white),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                 ),
@@ -253,7 +277,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     // Navigasi ke halaman registrasi
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      MaterialPageRoute(builder: (context) => ScreenSing()),
                     );
                   },
                   child: Text(

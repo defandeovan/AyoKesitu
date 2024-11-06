@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project_flutter/login.dart';
+// import 'package:uuid/uuid.dart';
+ // Pastikan Anda mengimpor halaman login
 
-class SignUpScreen extends StatefulWidget {
+class ScreenSing extends StatefulWidget {
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _ScreenSingState createState() => _ScreenSingState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _ScreenSingState extends State<ScreenSing> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _fnameController = TextEditingController(); 
+  final TextEditingController _lnameController = TextEditingController();
+   final TextEditingController _phoneController = TextEditingController();/// Kontroler untuk nama
 
   // Fungsi untuk registrasi
   Future<void> _registerWithEmailPassword() async {
@@ -40,6 +47,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: _passwordController.text,
       );
 
+   
+      String userId = userCredential.user!.uid;
+
+      // Menyimpan data pengguna ke Firestore
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        'first_name': _fnameController.text,
+        'last_name': _lnameController.text,
+        'email': _emailController.text,
+        'telp' : _phoneController.text,
+        'userId': userId, // Menyimpan ID yang dibuat
+      });
+
       print("Registered: ${userCredential.user?.email}");
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -49,8 +68,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       );
 
-      // Kembali ke halaman login setelah registrasi berhasil
-      Navigator.pop(context);
+      // Navigasi ke halaman login setelah registrasi berhasil
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignInScreen()), // Ganti dengan halaman login Anda
+      );
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       switch (e.code) {
@@ -97,9 +119,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
+              controller: _fnameController, // Tambahkan TextField untuk nama
+              decoration: InputDecoration(
+                hintText: 'Frist Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16),
+             TextField(
+              controller: _lnameController, // Tambahkan TextField untuk nama
+              decoration: InputDecoration(
+                hintText: 'Last Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+                SizedBox(height: 16),
+            TextField(
               controller: _emailController,
               decoration: InputDecoration(
                 hintText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+             SizedBox(height: 16),
+            TextField(
+              controller: _phoneController,
+              decoration: InputDecoration(
+                hintText: 'Phone Number',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -128,7 +174,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Kembali ke halaman login
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                    ); 
               },
               child: Text("Sudah memiliki akun? Masuk"),
             ),

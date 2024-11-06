@@ -4,13 +4,15 @@ import 'package:project_flutter/presentation/pages/homepage/Home_Screen.dart';
 import 'package:project_flutter/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'firebase_options.dart';
 import 'authcontroller.dart';
 import 'FirebaseMessagingHandler.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'ayo_kesitu',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Get.put(AuthController());
@@ -76,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SignInScreen()),
+                                builder: (context) =>   SignInScreen()),
                           );
                         },
                         child: Text('Sign In'),
@@ -136,59 +138,6 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SignUpScreen extends StatelessWidget {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  Future<void> signUp() async {
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      // Jika pendaftaran berhasil, navigasi ke HomeScreen
-      Get.to(HomeScreen());
-    } on FirebaseAuthException catch (e) {
-      // Menampilkan pesan kesalahan
-      Get.snackbar('Error', e.message ?? 'Registration failed');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: signUp,
-              child: Text('Sign Up'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

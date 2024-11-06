@@ -30,7 +30,7 @@ dependencies:
   flutter_local_notifications: ^17.2.4
   cloud_firestore: ^5.4.4
   firebase_storage: ^12.3.4
-  
+  uuid: ^4.4.2
 
  
 dev_dependencies:
@@ -68,7 +68,7 @@ flutter:
     - assets/img/Map Pin.png
     - assets/img/onboarding.png
     - assets/img/Mask Group.png
-
+    - assets/img/image 17.png
   fonts:
     - family: WorkSans
       fonts:

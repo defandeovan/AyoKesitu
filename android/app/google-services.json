@@ -1,8 +1,9 @@
 {
   "project_info": {
     "project_number": "983675880892",
+    "firebase_url": "https://ayokesituu-default-rtdb.firebaseio.com",
     "project_id": "ayokesituu",
-    "storage_bucket": "ayokesituu.appspot.com"
+    "storage_bucket": "ayokesituu.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +13,12 @@
           "package_name": "com.android.application"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "983675880892-298rc68ce36odce7u6d7dc1ilhmmse86.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB-CxBQ5or2Z4wEw6WGIo6dbb3D4XA04vQ"
@@ -20,7 +26,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983675880892-298rc68ce36odce7u6d7dc1ilhmmse86.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "983675880892-9jlf2fafo3mhvb1v67jjq0lmpid6758m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.projectFlutter"
+              }
+            }
+          ]
         }
       }
     }
