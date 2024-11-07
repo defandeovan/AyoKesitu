@@ -43,6 +43,14 @@ flutter:
 
 
   assets:
+    - assets/img/admin1.png
+    - assets/img/admin2.png
+    - assets/img/admin3.png
+    - assets/img/gopay_icon.png
+    - assets/img/paypal_icon.png
+    - assets/img/creditcard_icon.png
+    - assets/img/bca_icon.png
+    - assets/img/dana_icon.png
     - assets/img/image.png
     - assets/img/image_pemesanan.png
     - assets/img/logo.png
