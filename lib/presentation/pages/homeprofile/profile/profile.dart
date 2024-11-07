@@ -153,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                  SizedBox(width: 20),
+                  Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgPicture.asset(
@@ -199,9 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
-                      width: 65,
-                    ),
+                    Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgPicture.asset(
@@ -254,9 +252,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
+                    Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgPicture.asset(
@@ -311,7 +307,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: 20),
+                    Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgPicture.asset(
@@ -364,7 +360,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: 20),
+                    Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgPicture.asset(

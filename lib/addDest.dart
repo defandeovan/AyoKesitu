@@ -45,7 +45,7 @@ class _AddDestinationScreenState extends State<AddDestinationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add New Destination"),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
