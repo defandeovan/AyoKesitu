@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_flutter/login.dart';
 // import 'package:uuid/uuid.dart';
- // Pastikan Anda mengimpor halaman login
+// Pastikan Anda mengimpor halaman login
 
 class ScreenSing extends StatefulWidget {
   @override
@@ -13,14 +13,19 @@ class ScreenSing extends StatefulWidget {
 class _ScreenSingState extends State<ScreenSing> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-  final TextEditingController _fnameController = TextEditingController(); 
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _fnameController = TextEditingController();
   final TextEditingController _lnameController = TextEditingController();
-   final TextEditingController _phoneController = TextEditingController();/// Kontroler untuk nama
+  final TextEditingController _phoneController = TextEditingController();
+
+  /// Kontroler untuk nama
 
   // Fungsi untuk registrasi
   Future<void> _registerWithEmailPassword() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty || _confirmPasswordController.text.isEmpty) {
+    if (_emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Semua field harus diisi.'),
@@ -41,13 +46,12 @@ class _ScreenSingState extends State<ScreenSing> {
     }
 
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
 
-   
       String userId = userCredential.user!.uid;
 
       // Menyimpan data pengguna ke Firestore
@@ -55,7 +59,7 @@ class _ScreenSingState extends State<ScreenSing> {
         'first_name': _fnameController.text,
         'last_name': _lnameController.text,
         'email': _emailController.text,
-        'telp' : _phoneController.text,
+        'telp': _phoneController.text,
         'userId': userId, // Menyimpan ID yang dibuat
       });
 
@@ -63,7 +67,8 @@ class _ScreenSingState extends State<ScreenSing> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Registrasi berhasil! Selamat datang, ${userCredential.user?.email}'),
+          content: Text(
+              'Registrasi berhasil! Selamat datang, ${userCredential.user?.email}'),
           backgroundColor: Colors.green,
         ),
       );
@@ -71,7 +76,9 @@ class _ScreenSingState extends State<ScreenSing> {
       // Navigasi ke halaman login setelah registrasi berhasil
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignInScreen()), // Ganti dengan halaman login Anda
+        MaterialPageRoute(
+            builder: (context) =>
+                SignInScreen()), // Ganti dengan halaman login Anda
       );
     } on FirebaseAuthException catch (e) {
       String errorMessage;
@@ -110,79 +117,145 @@ class _ScreenSingState extends State<ScreenSing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Registrasi'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _fnameController, // Tambahkan TextField untuk nama
-              decoration: InputDecoration(
-                hintText: 'Frist Name',
-                border: OutlineInputBorder(),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/img/image 17.png',
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/img/logo.png',
+                    width: 150,
+                    height: 150,
+                  ),
+                  SizedBox(
+                      height: 20), // Replace Spacer with SizedBox for spacing
+                  Text(
+                    'Travel with ease, Discover with Dave',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Register now',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _fnameController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'First Names',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _lnameController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Last Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Phone Number',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Kata Sandi',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _confirmPasswordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Konfirmasi Kata Sandi',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: _registerWithEmailPassword,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      minimumSize: Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: Text('Daftar'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignInScreen()),
+                      );
+                    },
+                    child: Text(
+                      "Sudah memiliki akun? Masuk",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 16),
-             TextField(
-              controller: _lnameController, // Tambahkan TextField untuk nama
-              decoration: InputDecoration(
-                hintText: 'Last Name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-                SizedBox(height: 16),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                hintText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
-             SizedBox(height: 16),
-            TextField(
-              controller: _phoneController,
-              decoration: InputDecoration(
-                hintText: 'Phone Number',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                hintText: 'Kata Sandi',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: _confirmPasswordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                hintText: 'Konfirmasi Kata Sandi',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _registerWithEmailPassword, // Panggil fungsi registrasi
-              child: Text('Daftar'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignInScreen()),
-                    ); 
-              },
-              child: Text("Sudah memiliki akun? Masuk"),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -172,7 +172,8 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: Column(
+            child: SingleChildScrollView(
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
@@ -188,7 +189,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     color: Colors.white,
                   ),
                 ),
-                Spacer(),
+                SizedBox(height: 10,),
                 Text(
                   'Sign in now',
                   style: TextStyle(
@@ -197,14 +198,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 8),
-                Text(
-                  'Travel with ease, Discover with Dave',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
+                
                 SizedBox(height: 32),
                 TextField(
                   controller: _emailController,
@@ -287,6 +281,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ],
             ),
+            )
+            
           ),
         ],
       ),

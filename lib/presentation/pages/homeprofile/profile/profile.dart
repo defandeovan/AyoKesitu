@@ -5,8 +5,10 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project_flutter/addDest.dart';
 import 'package:project_flutter/main.dart';
 import 'package:project_flutter/presentation/pages/homeprofile/profile/editProfile.dart';
+import 'package:project_flutter/presentation/pages/order/yourOrder.dart';
 import 'package:project_flutter/presentation/pages/payment/payment.dart';
 import 'package:project_flutter/presentation/pages/settings/setting.dart';
 
@@ -62,10 +64,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
+        child: SingleChildScrollView(
+            child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 50),
             const Text(
               "Your Profile",
               style: TextStyle(
@@ -151,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                    Spacer(),
+                  SizedBox(width: 20),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgPicture.asset(
@@ -167,7 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                Get.to('');
+                Get.to(Yourorder());
               },
               child: Container(
                 width: 295,
@@ -217,11 +219,12 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             GestureDetector(
               onTap: () {
-                try {
-                  Get.to(CheckoutPage());
-                } catch (e) {
-                  print('Error during navigation: $e');
-                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CheckoutPage(), // Pass userId if needed
+                    ));
               },
               child: Container(
                 width: 295,
@@ -308,7 +311,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Spacer(),
+                    SizedBox(width: 20),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgPicture.asset(
@@ -321,9 +324,65 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+            SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        AddDestinationScreen(), // Pass userId if needed
+                  ),
+                );
+              },
+              child: Container(
+                width: 295,
+                height: 80,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black.withOpacity(0.2),
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgPicture.asset(
+                        'assets/img/Settings.svg',
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    const Text(
+                      'Add Product',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'WorkSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgPicture.asset(
+                        'assets/img/Chevron right.svg',
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 100),
 // Lainnya tetap sama
           ],
         ),
+        )
+      
       ),
     );
   }

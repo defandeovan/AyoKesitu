@@ -91,20 +91,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Edit Profile"),
+      ),
       body: Center(
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 50),
-            Text(
-              "Edit Profile",
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'WorkSans',
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            
             GestureDetector(
               onTap: _pickImage,
               child: ClipOval(
@@ -162,32 +158,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
             SizedBox(height: 10),
-            Container(
-              width: 200,
-              height: 43,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 15, 133, 29),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                ),
-                onPressed: () {
-                  AuthController authController = Get.find<AuthController>();
-                  authController.logout();
-                },
-                child: Text(
-                  "Logout",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'WorkSans',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                ),
-              ),
-            ),
+            
           ],
         ),
+        )
+        
       ),
     );
   }

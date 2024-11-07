@@ -69,6 +69,10 @@ flutter:
     - assets/img/onboarding.png
     - assets/img/Mask Group.png
     - assets/img/image 17.png
+    - assets/img/visa.png
+    - assets/img/paypal.png
+    - assets/img/dana.png
+    - assets/img/qris.png
   fonts:
     - family: WorkSans
       fonts:
