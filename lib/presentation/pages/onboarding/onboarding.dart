@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:project_flutter/presentation/pages/onboarding/boardingnext.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,9 +71,11 @@ class BromoScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // Handle the button press action
+                    Get.to(BoardingNextStep());
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
                     backgroundColor: Colors.green,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),

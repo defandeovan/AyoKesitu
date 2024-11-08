@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'login.dart'; // Pastikan untuk mengimpor halaman login yang sesuai
+import '../login/login.dart'; // Pastikan untuk mengimpor halaman login yang sesuai
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance; // Inisialisasi Firebase Auth

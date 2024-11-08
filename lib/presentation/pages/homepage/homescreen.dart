@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_flutter/presentation/pages/homeprofile/profile/profile.dart';
 import 'package:project_flutter/presentation/pages/message/messages.dart';
-import '../../../Destination.dart'; // Import model Destination
+import '../controller/Destination.dart'; // Import model Destination
 
 class DestinationPage extends StatefulWidget {
   final String userId;

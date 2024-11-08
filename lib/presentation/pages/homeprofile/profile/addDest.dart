@@ -8,7 +8,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:project_flutter/presentation/pages/homeprofile/profile/profile.dart';
 
 // Import your DatabaseService
-import '../../../../Databese_Service.dart'; // Replace with your actual path
+import '../../controller/Databese_Service.dart'; // Replace with your actual path
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project_flutter/presentation/pages/homepage/homescreen.dart';
 import 'package:project_flutter/presentation/pages/homeprofile/profile/profile.dart';
-import 'package:project_flutter/signin.dart';
-import 'firebase_options.dart';
+import 'package:project_flutter/presentation/pages/register/signin.dart';
+import '../controller/firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 // Import halaman registrasi
