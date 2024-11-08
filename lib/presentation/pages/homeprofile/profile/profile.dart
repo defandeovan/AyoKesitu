@@ -5,10 +5,11 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project_flutter/addDest.dart';
+import 'package:project_flutter/presentation/pages/homeprofile/profile/addDest.dart';
 import 'package:project_flutter/main.dart';
 import 'package:project_flutter/presentation/pages/homeprofile/profile/editProfile.dart';
 import 'package:project_flutter/presentation/pages/order/yourOrder.dart';
+import 'package:project_flutter/presentation/pages/payment/method.dart';
 import 'package:project_flutter/presentation/pages/payment/payment.dart';
 import 'package:project_flutter/presentation/pages/settings/setting.dart';
 import 'package:get/get.dart';
@@ -222,7 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          CheckoutPage(), // Pass userId if needed
+                          PaymentMethodPage(), // Pass userId if needed
                     ));
               },
               child: Container(
