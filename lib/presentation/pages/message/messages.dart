@@ -15,76 +15,94 @@ class MessagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Message'),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.of(context).pop();
+            Get.back();
           },
         ),
+        title: Text(
+          "Message",
+          style: TextStyle(color: Colors.black, fontSize: 18),
+        ),
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 16),
-          Obx(() => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => controller.toggleTab(true),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                      decoration: BoxDecoration(
-                        color: controller.isChatSelected.value
-                            ? Colors.green
-                            : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'Chat',
-                        style: TextStyle(
-                          color: controller.isChatSelected.value
-                              ? Colors.white
-                              : Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: () => controller.toggleTab(false),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                      decoration: BoxDecoration(
-                        color: !controller.isChatSelected.value
-                            ? Colors.grey[300]
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'Notifikasi',
-                        style: TextStyle(
-                          color: !controller.isChatSelected.value
-                              ? Colors.black
-                              : Colors.black54,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )),
-          SizedBox(height: 24),
-          Expanded(
-            child: ListView(
-              children: [
-                chatTile('Admin 1', 'Halo', '12.00', 'assets/img/admin1.png'),
-                chatTile('Admin 2', 'Halo', '12.00', 'assets/img/admin2.png'),
-                chatTile('Admin 3', 'Halo', '12.00', 'assets/img/admin3.png'),
-              ],
-            ),
+      body: Center(
+        child: Container(
+          width: 350,
+          height: 600,
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
           ),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () => controller.toggleTab(true),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                          decoration: BoxDecoration(
+                            color: controller.isChatSelected.value ? Colors.green : Colors.grey[300],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            'Chat',
+                            style: TextStyle(
+                              color: controller.isChatSelected.value ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () => controller.toggleTab(false),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                          decoration: BoxDecoration(
+                            color: !controller.isChatSelected.value ? Colors.green : Colors.grey[300],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            'Notifikasi',
+                            style: TextStyle(
+                              color: !controller.isChatSelected.value ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              SizedBox(height: 20),
+              Obx(() => controller.isChatSelected.value ? ChatView() : NotificationView()),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Tampilan untuk "Chat"
+class ChatView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView(
+        children: [
+          chatTile('Admin 1', 'Halo', '12.00', 'assets/img/admin1.png'),
+          chatTile('Admin 2', 'Halo', '12.00', 'assets/img/admin2.png'),
+          chatTile('Admin 3', 'Halo', '12.00', 'assets/img/admin3.png'),
         ],
       ),
     );
@@ -98,6 +116,43 @@ class MessagePage extends StatelessWidget {
       title: Text(name),
       subtitle: Text(message),
       trailing: Text(time),
+    );
+  }
+}
+
+// Tampilan untuk "Notifikasi"
+class NotificationView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView(
+        children: [
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+            ),
+            title: Text(
+              "Ayo Kesitu!",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text("Ada promo menarik buat kamu!"),
+            trailing: Text("12.00"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      home: MessagePage(),
     );
   }
 }

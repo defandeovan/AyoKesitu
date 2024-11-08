@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// ignore: unused_import
 import 'package:project_flutter/presentation/pages/homepage/Home_Screen.dart';
 import 'package:project_flutter/login.dart';
+// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
 import 'authcontroller.dart';
+// ignore: unused_import
 import 'FirebaseMessagingHandler.dart';
 
 Future<void> main() async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+// ignore: unused_import
 import 'package:project_flutter/presentation/pages/homeprofile/profile/profile.dart';
 import 'package:project_flutter/signin.dart';
 import 'firebase_options.dart';
