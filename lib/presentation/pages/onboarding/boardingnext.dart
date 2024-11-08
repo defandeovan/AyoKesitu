@@ -73,7 +73,7 @@ class BoardingNextStep extends StatelessWidget {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SumbaIslandScreen()));
+                                  builder: (context) => ScreenDest()));
                           // print("Sign In with Google button pressed");
                         },
                         icon: Icon(Icons.login, size: 18),

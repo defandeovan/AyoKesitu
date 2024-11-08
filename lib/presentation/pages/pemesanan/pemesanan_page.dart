@@ -10,12 +10,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SumbaIslandScreen(),
+      home: ScreenDest(),
     );
   }
 }
 
-class SumbaIslandScreen extends StatelessWidget {
+class ScreenDest extends StatelessWidget {
   // Firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -220,8 +220,8 @@ class SumbaIslandScreen extends StatelessWidget {
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF00A550),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 43, vertical: 9),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 43, vertical: 9),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
