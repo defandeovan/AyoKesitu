@@ -70,10 +70,7 @@ class BoardingNextStep extends StatelessWidget {
                       SizedBox(height: 10),
                       ElevatedButton.icon(
                         onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ScreenDest()));
+                        
                           // print("Sign In with Google button pressed");
                         },
                         icon: Icon(Icons.login, size: 18),

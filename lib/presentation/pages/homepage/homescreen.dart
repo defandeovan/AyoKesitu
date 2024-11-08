@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_flutter/presentation/pages/homeprofile/profile/profile.dart';
 import 'package:project_flutter/presentation/pages/message/messages.dart';
+
+import 'package:project_flutter/presentation/pages/pemesanan/pemesanan_page.dart';
 import '../controller/Destination.dart'; // Import model Destination
 
 class DestinationPage extends StatefulWidget {
@@ -125,14 +127,23 @@ class _DestinationPageState extends State<DestinationPage> with SingleTickerProv
 
   // Horizontal list for recommended destinations
   Widget _buildHorizontalList(List<Destination> destinations) {
-    return SizedBox(
-      height: 220,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: destinations.length,
-        itemBuilder: (context, index) {
-          var destination = destinations[index];
-          return Card(
+  return SizedBox(
+    height: 220,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: destinations.length,
+      itemBuilder: (context, index) {
+        var destination = destinations[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ScreenDest(destination: destination),
+              ),
+            );
+          },
+          child: Card(
             margin: EdgeInsets.symmetric(horizontal: 8),
             child: Container(
               width: 200,
@@ -176,7 +187,7 @@ class _DestinationPageState extends State<DestinationPage> with SingleTickerProv
                               Text('${destination.location}', style: TextStyle(color: Colors.white, fontSize: 12)),
                             ],
                           ),
-                          SizedBox(height: 4),
+                           SizedBox(height: 4),
                           Row(
                             children: [
                               SvgPicture.asset('assets/img/star.svg', width: 12, height: 12),
@@ -187,8 +198,7 @@ class _DestinationPageState extends State<DestinationPage> with SingleTickerProv
                         ],
                       ),
                     ),
-                  ),
-                  Positioned(
+                  ), Positioned(
                     top: 10,
                     right: 10,
                     child: Stack(
@@ -210,21 +220,32 @@ class _DestinationPageState extends State<DestinationPage> with SingleTickerProv
                 ],
               ),
             ),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        );
+      },
+    ),
+  );
+}
 
   // Vertical list for popular destinations
-  Widget _buildPopularList(List<Destination> destinations) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: destinations.length,
-      itemBuilder: (context, index) {
-        var destination = destinations[index];
-        return Card(
+ Widget _buildPopularList(List<Destination> destinations) {
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemCount: destinations.length,
+    itemBuilder: (context, index) {
+      var destination = destinations[index];
+      return GestureDetector(
+        onTap: () {
+          // Aksi ketika item diklik, navigasi ke halaman detail dengan data destinasi
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ScreenDest(destination: destination),
+            ),
+          );
+        },
+        child: Card(
           margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: Container(
             width: 355,
@@ -234,13 +255,20 @@ class _DestinationPageState extends State<DestinationPage> with SingleTickerProv
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: Colors.white,
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.4), blurRadius: 4, offset: Offset(0, 4))],
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.4), blurRadius: 4, offset: Offset(0, 4)),
+              ],
             ),
             child: Row(
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.asset('assets/img/lombok.jpg', fit: BoxFit.cover, width: 111, height: 135),
+                  child: Image.asset(
+                    'assets/img/lombok.jpg',  // Gantilah dengan path gambar destinasi dari data
+                    fit: BoxFit.cover,
+                    width: 111,
+                    height: 135,
+                  ),
                 ),
                 SizedBox(width: 16),
                 Expanded(
@@ -263,17 +291,23 @@ class _DestinationPageState extends State<DestinationPage> with SingleTickerProv
                       ),
                       Text('\$${destination.price}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       SizedBox(height: 4),
-                      Text('Kebersihan Akomodasi: ${destination.cleanAccommodation}', style: TextStyle(fontSize: 14, color: Colors.grey)),
+                      Text(
+                        'Kebersihan Akomodasi: ${destination.cleanAccommodation}',
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
+  
 
   void _onItemTapped(int index) {
     setState(() {
