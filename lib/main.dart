@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:project_flutter/presentation/pages/homepage/Home_Screen.dart';
+import 'package:project_flutter/addDest.dart';
+
+// import 'package:project_flutter/homebody.dart';
+import 'package:project_flutter/presentation/pages/homepage/homescreen.dart';
 import 'package:project_flutter/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+
+import 'package:project_flutter/presentation/pages/pemesanan/pemesanan_page.dart';
 
 import 'firebase_options.dart';
 import 'authcontroller.dart';
@@ -78,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>   SignInScreen()),
+                                builder: (context) => SignInScreen()),
                           );
                         },
                         child: Text('Sign In'),
@@ -94,7 +100,11 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(height: 10),
                       ElevatedButton.icon(
                         onPressed: () {
-                          print("Sign In with Google button pressed");
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SumbaIslandScreen()));
+                          // print("Sign In with Google button pressed");
                         },
                         icon: Icon(Icons.login, size: 18),
                         label: Text('Sign In With Google Account'),

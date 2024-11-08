@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:project_flutter/authcontroller.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project_flutter/presentation/pages/homepage/Home_Screen.dart';
+import 'package:project_flutter/presentation/pages/homepage/homescreen.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String userId;
@@ -79,7 +79,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Profil berhasil diperbarui!')),
       );
-      Get.to(HomeScreen(userId: widget.userId));
+      Get.to(DestinationPage(userId: widget.userId));
     } catch (e) {
       print("Error updating profile: $e");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -95,12 +95,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         title: Text("Edit Profile"),
       ),
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
+          child: SingleChildScrollView(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 50),
-            
             GestureDetector(
               onTap: _pickImage,
               child: ClipOval(
@@ -158,12 +157,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
             SizedBox(height: 10),
-            
           ],
         ),
-        )
-        
-      ),
+      )),
     );
   }
 

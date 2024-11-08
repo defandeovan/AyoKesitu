@@ -31,6 +31,8 @@ dependencies:
   cloud_firestore: ^5.4.4
   firebase_storage: ^12.3.4
   uuid: ^4.4.2
+  dotted_line: ^3.0.0
+  
 
  
 dev_dependencies:
@@ -73,6 +75,9 @@ flutter:
     - assets/img/paypal.png
     - assets/img/dana.png
     - assets/img/qris.png
+    - assets/img/Thumbs up.png
+    - assets/img/Check circle.png
+    - assets/img/camera.svg
   fonts:
     - family: WorkSans
       fonts:

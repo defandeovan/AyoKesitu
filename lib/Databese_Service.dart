@@ -11,6 +11,8 @@ class DatabaseService {
     required double rating,
     required List<String> amenities,
     required double price,
+    required String selfCheckIn, // New field
+    required String cleanAccommodation, // New field
   }) async {
     try {
       await destinationsCollection.add({
@@ -19,6 +21,8 @@ class DatabaseService {
         'rating': rating,
         'amenities': amenities,
         'price': price,
+        'selfCheckIn': selfCheckIn, // New field
+        'cleanAccommodation': cleanAccommodation, // New field
       });
       print("Data destinasi berhasil ditambahkan!");
     } catch (e) {

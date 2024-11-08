@@ -11,6 +11,7 @@ import 'package:project_flutter/presentation/pages/homeprofile/profile/editProfi
 import 'package:project_flutter/presentation/pages/order/yourOrder.dart';
 import 'package:project_flutter/presentation/pages/payment/payment.dart';
 import 'package:project_flutter/presentation/pages/settings/setting.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userId;
@@ -327,7 +328,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        AddDestinationScreen(), // Pass userId if needed
+                        AddDest(), // Pass userId if needed
                   ),
                 );
               },
