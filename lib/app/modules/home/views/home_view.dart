@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:project_flutter/app/modules/booking/views/booking_view.dart';
+import 'package:project_flutter/app/modules/favorite/views/favorite_view.dart';
 import 'package:project_flutter/app/modules/messages/views/messages_view.dart';
 import 'package:project_flutter/app/modules/profile/views/profile_view.dart';
 import 'package:project_flutter/app/routes/app_pages.dart';
@@ -31,11 +32,12 @@ class _HomeViewState extends State<HomeView>
     _tabController = TabController(length: 2, vsync: this);
     _widgetOptions = <Widget>[
       _buildDestinationContent(),
-      Placeholder(),
+      FavoriteView(),
       MessagesView(),
       ProfileView(userId: widget.userId), // Placeholder for other tab content
     ];
   }
+  
 
   Widget _buildDestinationContent() {
     return SingleChildScrollView(
@@ -344,49 +346,34 @@ class _HomeViewState extends State<HomeView>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _widgetOptions[_selectedIndex],
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        height: 70,
-        margin: EdgeInsets.only(bottom: 30),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black12, blurRadius: 10, offset: Offset(0, -5))
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
-          child: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                  icon: _buildBottomNavItem('assets/img/Home.svg', 0),
-                  label: ''),
-              BottomNavigationBarItem(
-                  icon: _buildBottomNavItem('assets/img/Heart.svg', 1),
-                  label: ''),
-              BottomNavigationBarItem(
-                  icon: _buildBottomNavItem('assets/img/Send.svg', 2),
-                  label: ''),
-              BottomNavigationBarItem(
-                  icon: _buildBottomNavItem('assets/img/User.svg', 3),
-                  label: ''),
-            ],
-            currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-        ),
-      ),
-    );
-  }
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: _widgetOptions[_selectedIndex],
+    bottomNavigationBar: BottomNavigationBar(
+      items: [
+        BottomNavigationBarItem(
+            icon: _buildBottomNavItem('assets/img/home-2.svg', 0),
+            label: 'home'),
+        BottomNavigationBarItem(
+            icon: _buildBottomNavItem('assets/img/Heart.svg', 1),
+            label: 'favorite'),
+        BottomNavigationBarItem(
+            icon: _buildBottomNavItem('assets/img/clock.svg', 2),
+            label: ''),
+        BottomNavigationBarItem(
+            icon: _buildBottomNavItem('assets/img/user copy.svg', 3),
+            label: ''),
+      ],
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      backgroundColor: Colors.white,
+      elevation: 0,
+    ),
+  );
+}
+
 
   Widget _buildBottomNavItem(String assetPath, int index) {
     return Container(
