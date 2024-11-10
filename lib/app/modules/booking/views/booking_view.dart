@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:project_flutter/controller/Destination.dart';
+import 'package:project_flutter/app/data/Destination.dart';
 
 
 

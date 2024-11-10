@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project_flutter/controller/Destination.dart';
+import 'package:project_flutter/app/data/Destination.dart';
 
 class DestinationService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

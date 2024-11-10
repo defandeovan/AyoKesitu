@@ -21,7 +21,6 @@ abstract class Routes {
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
   static const FAVORITE = _Paths.FAVORITE;
   static const CALENDAR = _Paths.CALENDAR;
-  static const NOTIFIKASI = _Paths.NOTIFIKASI;
   static const CHAT = _Paths.CHAT;
 }
 
@@ -45,6 +44,5 @@ abstract class _Paths {
   static const FORGOT_PASSWORD = '/forgot-password';
   static const FAVORITE = '/favorite';
   static const CALENDAR = '/calendar';
-  static const NOTIFIKASI = '/notifikasi';
   static const CHAT = '/chat';
 }

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_flutter/app/routes/app_pages.dart';
-import 'package:project_flutter/controller/authcontroller.dart';
+import 'package:project_flutter/app/controller/authcontroller.dart';
 
 class SettingView extends StatelessWidget {
   void deleteUserAccount(BuildContext context) async {

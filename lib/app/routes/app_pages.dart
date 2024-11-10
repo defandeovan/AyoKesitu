@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../../controller/DestinasiService.dart';
-import '../../controller/Destination.dart';
+import '../data/DestinasiService.dart';
+import '../data/Destination.dart';
 import '../modules/addDest/bindings/add_dest_binding.dart';
 import '../modules/addDest/views/add_dest_view.dart';
 import '../modules/boarding/bindings/boarding_binding.dart';
@@ -32,8 +32,6 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/messages/bindings/messages_binding.dart';
 import '../modules/messages/views/messages_view.dart';
-import '../modules/notifikasi/bindings/notifikasi_binding.dart';
-import '../modules/notifikasi/views/notifikasi_view.dart';
 import '../modules/payMethod/bindings/pay_method_binding.dart';
 import '../modules/payMethod/views/pay_method_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
@@ -189,11 +187,6 @@ class AppPages {
       name: _Paths.CALENDAR,
       page: () => const CalendarView(),
       binding: CalendarBinding(),
-    ),
-    GetPage(
-      name: _Paths.NOTIFIKASI,
-      page: () =>  NotifikasiView(),
-      binding: NotifikasiBinding(),
     ),
      GetPage(
       name: _Paths.CHAT,
