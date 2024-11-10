@@ -6,6 +6,9 @@ import 'package:project_flutter/login.dart';
 // ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:project_flutter/presentation/pages/message/chat.dart';
+import 'package:project_flutter/presentation/pages/payment/payment.dart';
+import 'package:project_flutter/presentation/pages/payment/success.dart';
 
 import 'firebase_options.dart';
 import 'authcontroller.dart';
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: LoginScreen(),
+      home: PaymentSuccessPage(),
       debugShowCheckedModeBanner: false,
     );
   }
