@@ -1,9 +1,26 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_flutter/app/modules/payment/views/success.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: CheckoutConfirmationPage(),
+    );
+  }
+}
 
 class CheckoutConfirmationPage extends StatelessWidget {
-  const CheckoutConfirmationPage({super.key});
+  CheckoutConfirmationPage({super.key});
 
+  final AudioPlayer _audioPlayer = AudioPlayer();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,14 +80,26 @@ class CheckoutConfirmationPage extends StatelessWidget {
             // Continue button
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  // Action when continue button is pressed
-                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
                 ),
                 child: Text('Continue'),
+                onPressed: () async {
+                  // Action when continue button is pressed
+
+                  try {
+                    await _audioPlayer
+                        .play(AssetSource('sounds/musik_mobile.mp3'));
+                    print('Audio playing...');
+                  } catch (e) {
+                    print("erorrrrrr : $e");
+                  }
+                  _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+                    print('Status pemutar: $state');
+                  });
+                  Get.to(() => PaymentSuccessPage());
+                },
               ),
             ),
           ],
@@ -110,7 +139,8 @@ class PaymentSummary extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Payment', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text('Payment',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,7 +185,8 @@ class PaymentDetailSection extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Payment', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text('Payment',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               SizedBox(height: 8),
               Row(
                 children: [
@@ -196,7 +227,8 @@ class ShippingAddressSection extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Shipping address', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text('Shipping address',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               SizedBox(height: 8),
               Row(
                 children: [

@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: PaymentSuccessPage(),
-    );
-  }
-}
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:project_flutter/app/modules/payment/controllers/payment_controller.dart';
 
 class PaymentSuccessPage extends StatelessWidget {
+  final PaymentController controller = Get.put(PaymentController());
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
