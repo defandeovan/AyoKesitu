@@ -1,7 +1,6 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:project_flutter/app/routes/app_pages.dart';
 import '../controllers/messages_controller.dart';
 
 class MessagesView extends StatelessWidget {
@@ -105,13 +104,13 @@ class MessagesView extends StatelessWidget {
                 // Daftar Chat
                 return ListView(
                   children: [
-                    chatTile(
+                   chatTile(
                         'Admin 1', 'Halo', '12.00', 'assets/img/admin1.png'),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 25),
                       child: DottedLine(
                       lineThickness: 2, // Ketebalan garis
-                      dashColor: Color(0xFFD9D9D9), // Warna garis
+                       dashColor: Color(0xFFD9D9D9), // Warna garis
                       dashLength: 5, // Panjang tiap dash
                       dashGapLength:
                           0, // Tidak ada celah, sehingga menjadi garis lurus

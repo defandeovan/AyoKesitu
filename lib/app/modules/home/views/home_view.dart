@@ -5,7 +5,6 @@ import 'package:project_flutter/app/modules/booking/views/booking_view.dart';
 import 'package:project_flutter/app/modules/favorite/views/favorite_view.dart';
 import 'package:project_flutter/app/modules/messages/views/messages_view.dart';
 import 'package:project_flutter/app/modules/profile/views/profile_view.dart';
-import 'package:project_flutter/app/routes/app_pages.dart';
 import 'package:project_flutter/app/data/Destination.dart';
 import 'package:project_flutter/app/modules/home/controllers/home_controller.dart';
 
