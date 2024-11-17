@@ -81,12 +81,10 @@ class _EditprofileViewState extends State<EditprofileView> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Profil berhasil diperbarui!')),
       );
-      Get.to(Routes.PROFILE);
+      Get.to(Routes.HOME);
     } catch (e) {
       print("Error updating profile: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal memperbarui profil.')),
-      );
+   
     }
   }
 

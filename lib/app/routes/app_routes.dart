@@ -22,6 +22,8 @@ abstract class Routes {
   static const FAVORITE = _Paths.FAVORITE;
   static const CALENDAR = _Paths.CALENDAR;
   static const CHAT = _Paths.CHAT;
+  static const CHATSCREEN = _Paths.CHATSCREEN;
+
 }
 
 abstract class _Paths {
@@ -45,4 +47,6 @@ abstract class _Paths {
   static const FAVORITE = '/favorite';
   static const CALENDAR = '/calendar';
   static const CHAT = '/chat';
+  static const CHATSCREEN = '/chatscreen';
+
 }

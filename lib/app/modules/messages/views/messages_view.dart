@@ -1,3 +1,4 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_flutter/app/routes/app_pages.dart';
@@ -24,51 +25,77 @@ class MessagesView extends StatelessWidget {
           Obx(() => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () => controller.toggleTab(true),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                      decoration: BoxDecoration(
-                        color: controller.isChatSelected.value
-                            ? Colors.green
-                            : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'Chat',
-                        style: TextStyle(
-                          color: controller.isChatSelected.value
-                              ? Colors.white
-                              : Colors.black,
-                          fontWeight: FontWeight.bold,
+                  Container(
+                    width: 317,
+                    height: 38,
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                          color:
+                              Colors.black.withOpacity(0.2), // Warna bayangan
+                          blurRadius: 10, // Tingkat blur
+                          offset: const Offset(0, 5), // Posisi bayangan
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: () => controller.toggleTab(false),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                      decoration: BoxDecoration(
-                        color: controller.isNotificationSelected.value
-                            ? Colors.green
-                            : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'Notifikasi',
-                        style: TextStyle(
-                          color: controller.isNotificationSelected.value
-                              ? Colors.white
-                              : Colors.black,
-                          fontWeight: FontWeight.bold,
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => controller.toggleTab(true),
+                          child: Container(
+                            width: 152, // Ganti dengan lebar yang Anda inginkan
+                            height: 34,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 60),
+
+                            decoration: BoxDecoration(
+                              color: controller.isChatSelected.value
+                                  ? Colors.green
+                                  : Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Text(
+                              'Chat',
+                              style: TextStyle(
+                                color: controller.isChatSelected.value
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(width: 8),
+                        GestureDetector(
+                          onTap: () => controller.toggleTab(false),
+                          child: Container(
+                            width: 152, // Ganti dengan lebar yang Anda inginkan
+                            height: 34,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 40),
+                            decoration: BoxDecoration(
+                              color: controller.isNotificationSelected.value
+                                  ? Colors.green
+                                  : Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Text(
+                              'Notifikasi',
+                              style: TextStyle(
+                                color: controller.isNotificationSelected.value
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               )),
           SizedBox(height: 24),
@@ -78,16 +105,60 @@ class MessagesView extends StatelessWidget {
                 // Daftar Chat
                 return ListView(
                   children: [
-                    chatTile('Admin 1', 'Halo', '12.00', 'assets/img/admin1.png'),
-                    chatTile('Admin 2', 'Halo', '12.00', 'assets/img/admin2.png'),
-                    chatTile('Admin 3', 'Halo', '12.00', 'assets/img/admin3.png'),
+                    chatTile(
+                        'Admin 1', 'Halo', '12.00', 'assets/img/admin1.png'),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: DottedLine(
+                      lineThickness: 2, // Ketebalan garis
+                      dashColor: Color(0xFFD9D9D9), // Warna garis
+                      dashLength: 5, // Panjang tiap dash
+                      dashGapLength:
+                          0, // Tidak ada celah, sehingga menjadi garis lurus
+                    ),
+                    ),
+                    chatTile(
+                        'Admin 2', 'Halo', '12.00', 'assets/img/admin2.png'),
+                        Container(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: DottedLine(
+                      lineThickness: 2, // Ketebalan garis
+                      dashColor: Color(0xFFD9D9D9), // Warna garis
+                      dashLength: 5, // Panjang tiap dash
+                      dashGapLength:
+                          0, // Tidak ada celah, sehingga menjadi garis lurus
+                    ),
+                    ),
+                    chatTile(
+                        'Admin 3', 'Halo', '12.00', 'assets/img/admin3.png'),
+                        Container(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: DottedLine(
+                      lineThickness: 2, // Ketebalan garis
+                      dashColor: Color(0xFFD9D9D9), // Warna garis
+                      dashLength: 5, // Panjang tiap dash
+                      dashGapLength:
+                          0, // Tidak ada celah, sehingga menjadi garis lurus
+                    ),
+                    ),
                   ],
                 );
               } else {
                 // Daftar Notifikasi
                 return ListView(
                   children: [
-                    notificationTile('Ayo Kesitu!', 'Ada promo menarik buat kamu!', '12.00'),
+                    notificationTile(
+                        'Ayo Kesitu!', 'Ada promo menarik buat kamu!', '12.00'),
+                        Container(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: DottedLine(
+                      lineThickness: 2, // Ketebalan garis
+                      dashColor: Color(0xFFD9D9D9), // Warna garis
+                      dashLength: 5, // Panjang tiap dash
+                      dashGapLength:
+                          0, // Tidak ada celah, sehingga menjadi garis lurus
+                    ),
+                    ),
                   ],
                 );
               }
