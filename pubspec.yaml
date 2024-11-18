@@ -36,11 +36,15 @@ dependencies:
   get_storage: ^2.1.1
   path_provider: ^2.1.5
 
-  audioplayers: ^6.1.0
+
   intl: ^0.19.0
   permission_handler: ^11.3.1
-  flutter_sound: ^9.17.0
+  flutter_sound: ^9.0.9
   record: ^5.2.0
+
+  audioplayers: ^6.1.0
+  speech_to_text: ^7.0.0  
+  
   
 
  

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:io';
-
+import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_flutter/app/modules/editprofile/views/editprofile_view.dart';
@@ -20,15 +20,19 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   Map<String, dynamic>? userData;
+   final GetStorage storage = GetStorage();
   bool isLoading = true;
 
-  File? _image;
+ File? _profileImage;
 
   @override
   void initState() {
     super.initState();
     // Ambil data pengguna saat halaman diinisialisasi
+     WidgetsBinding.instance.addPostFrameCallback((_) {
     getUserData();
+    loadProfileImage();
+  });
   }
 
   Future<void> getUserData() async {
@@ -56,7 +60,14 @@ class _ProfileViewState extends State<ProfileView> {
       });
     }
   }
-
+  void loadProfileImage() {
+    String? imagePath = storage.read<String>('profile_image');
+    if (imagePath != null && File(imagePath).existsSync()) {
+      setState(() {
+        _profileImage = File(imagePath);
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,9 +86,9 @@ class _ProfileViewState extends State<ProfileView> {
               ),
             ),
             ClipOval(
-              child: _image != null
+              child: _profileImage != null
                   ? Image.file(
-                      _image!,
+                      _profileImage!,
                       width: 130,
                       height: 130,
                       fit: BoxFit.cover,
@@ -354,7 +365,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
             ),
             SizedBox(height: 100),
-// Lainnya tetap sama
+
           ],
         ),
       )),

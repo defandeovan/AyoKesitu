@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -58,11 +59,17 @@ class ChatPage extends StatelessWidget {
                 // Menghapus reverse: true agar pesan baru muncul di bawah
                 children: controller.messages.map((message) {
                   if (message['type'] == 'image') {
-                    return _buildImageBubble(message['content'],message['timestamp']);
+                    return _buildImageBubble(
+                        message['content'], message['timestamp']);
                   } else if (message['type'] == 'text') {
-                    return _buildTextBubble(message['content'],message['timestamp']);
+                    return _buildTextBubble(
+                        message['content'], message['timestamp']);
                   } else if (message['type'] == 'video') {
-                    return _buildVideoBubble(message['content'], message['timestamp']);
+                    return _buildVideoBubble(
+                        message['content'], message['timestamp']);
+                  } else if (message['type'] == 'audio') {
+                    return _buildAudioBubble(
+                        message['content'], message['timestamp']);
                   } else {
                     return Container(); // Untuk tipe pesan yang tidak diketahui
                   }
@@ -108,6 +115,15 @@ class ChatPage extends StatelessWidget {
                         contentPadding: EdgeInsets.all(10),
                       ),
                     ),
+                  ),
+                ),
+                GestureDetector(
+                  onLongPress: controller.startRecording,
+                  onLongPressUp: controller.stopRecording,
+                  child: SvgPicture.asset(
+                    'assets/img/mic.svg', // Tambahkan ikon mikrofon sesuai aset Anda
+                    width: 24,
+                    height: 24,
                   ),
                 ),
                 GestureDetector(
@@ -285,7 +301,63 @@ class ChatPage extends StatelessWidget {
       ),
     );
   }
+}Widget _buildAudioBubble(File audioFile, DateTime timestamp) {
+  String formattedTime = DateFormat('hh:mm a').format(timestamp);
+  
+  final AudioPlayer audioPlayer = AudioPlayer(); // Gunakan instance yang sudah ada
+
+  return Align(
+    alignment: Alignment.centerRight,
+    child: Container(
+      margin: EdgeInsets.only(bottom: 8.0, right: 10.0),
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Color(0xFF00A550),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 4,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          IconButton(
+            icon: Icon(Icons.play_arrow, color: Colors.white),
+            onPressed: () async {
+              try {
+                // Jika audio sedang diputar, hentikan dulu
+                await audioPlayer.stop(); 
+
+                // Pastikan audio file ada dan bisa diputar
+                bool fileExists = await audioFile.exists();
+                if (fileExists) {
+                  await audioPlayer.play(DeviceFileSource(audioFile.path));
+                  print("Playing audio...");
+                } else {
+                  print("File not found.");
+                }
+              } catch (e) {
+                print('Error saat memutar audio: $e');
+              }
+            },
+          ),
+          SizedBox(height: 4),
+          Text(
+            formattedTime,
+            style: TextStyle(color: Colors.white70, fontSize: 12),
+          ),
+        ],
+      ),
+    ),
+  );
 }
+
+
+
 class VideoBubble extends StatefulWidget {
   final File video;
 
@@ -297,7 +369,8 @@ class VideoBubble extends StatefulWidget {
 
 class _VideoBubbleState extends State<VideoBubble> {
   late VideoPlayerController _controller;
-  bool _isPlaying = false;  // Menyimpan status apakah video sedang diputar atau dipause
+  bool _isPlaying =
+      false; // Menyimpan status apakah video sedang diputar atau dipause
 
   @override
   void initState() {

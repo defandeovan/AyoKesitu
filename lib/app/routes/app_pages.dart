@@ -101,7 +101,7 @@ class AppPages {
           lastName: lastName,
           email: email,
           phoneNumber: phoneNumber,
-          image: image,
+          
         );
       },
       binding: EditprofileBinding(),

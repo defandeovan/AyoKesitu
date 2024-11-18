@@ -1,23 +1,16 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_flutter/app/routes/app_pages.dart';
 import '../controllers/messages_controller.dart';
 
 class MessagesView extends StatelessWidget {
   final MessagesController controller = Get.put(MessagesController());
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Message'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
       body: Column(
         children: [
           SizedBox(height: 16),
@@ -104,41 +97,41 @@ class MessagesView extends StatelessWidget {
                 // Daftar Chat
                 return ListView(
                   children: [
-                   chatTile(
+                    chatTile(
                         'Admin 1', 'Halo', '12.00', 'assets/img/admin1.png'),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 25),
                       child: DottedLine(
-                      lineThickness: 2, // Ketebalan garis
-                       dashColor: Color(0xFFD9D9D9), // Warna garis
-                      dashLength: 5, // Panjang tiap dash
-                      dashGapLength:
-                          0, // Tidak ada celah, sehingga menjadi garis lurus
-                    ),
+                        lineThickness: 2, // Ketebalan garis
+                        dashColor: Color(0xFFD9D9D9), // Warna garis
+                        dashLength: 5, // Panjang tiap dash
+                        dashGapLength:
+                            0, // Tidak ada celah, sehingga menjadi garis lurus
+                      ),
                     ),
                     chatTile(
                         'Admin 2', 'Halo', '12.00', 'assets/img/admin2.png'),
-                        Container(
+                    Container(
                       padding: EdgeInsets.symmetric(horizontal: 25),
                       child: DottedLine(
-                      lineThickness: 2, // Ketebalan garis
-                      dashColor: Color(0xFFD9D9D9), // Warna garis
-                      dashLength: 5, // Panjang tiap dash
-                      dashGapLength:
-                          0, // Tidak ada celah, sehingga menjadi garis lurus
-                    ),
+                        lineThickness: 2, // Ketebalan garis
+                        dashColor: Color(0xFFD9D9D9), // Warna garis
+                        dashLength: 5, // Panjang tiap dash
+                        dashGapLength:
+                            0, // Tidak ada celah, sehingga menjadi garis lurus
+                      ),
                     ),
                     chatTile(
                         'Admin 3', 'Halo', '12.00', 'assets/img/admin3.png'),
-                        Container(
+                    Container(
                       padding: EdgeInsets.symmetric(horizontal: 25),
                       child: DottedLine(
-                      lineThickness: 2, // Ketebalan garis
-                      dashColor: Color(0xFFD9D9D9), // Warna garis
-                      dashLength: 5, // Panjang tiap dash
-                      dashGapLength:
-                          0, // Tidak ada celah, sehingga menjadi garis lurus
-                    ),
+                        lineThickness: 2, // Ketebalan garis
+                        dashColor: Color(0xFFD9D9D9), // Warna garis
+                        dashLength: 5, // Panjang tiap dash
+                        dashGapLength:
+                            0, // Tidak ada celah, sehingga menjadi garis lurus
+                      ),
                     ),
                   ],
                 );
@@ -148,15 +141,15 @@ class MessagesView extends StatelessWidget {
                   children: [
                     notificationTile(
                         'Ayo Kesitu!', 'Ada promo menarik buat kamu!', '12.00'),
-                        Container(
+                    Container(
                       padding: EdgeInsets.symmetric(horizontal: 25),
                       child: DottedLine(
-                      lineThickness: 2, // Ketebalan garis
-                      dashColor: Color(0xFFD9D9D9), // Warna garis
-                      dashLength: 5, // Panjang tiap dash
-                      dashGapLength:
-                          0, // Tidak ada celah, sehingga menjadi garis lurus
-                    ),
+                        lineThickness: 2, // Ketebalan garis
+                        dashColor: Color(0xFFD9D9D9), // Warna garis
+                        dashLength: 5, // Panjang tiap dash
+                        dashGapLength:
+                            0, // Tidak ada celah, sehingga menjadi garis lurus
+                      ),
                     ),
                   ],
                 );
@@ -168,16 +161,22 @@ class MessagesView extends StatelessWidget {
     );
   }
 
-  Widget chatTile(String name, String message, String time, String avatarPath) {
-    return ListTile(
+Widget chatTile(String name, String message, String time, String avatarPath) {
+  return GestureDetector(
+    onTap: () {
+      // Navigate to the chat screen with the user's chat details
+      Get.toNamed(Routes.CHAT);
+    },
+    child: ListTile(
       leading: CircleAvatar(
         backgroundImage: AssetImage(avatarPath),
       ),
       title: Text(name),
       subtitle: Text(message),
       trailing: Text(time),
-    );
-  }
+    ),
+  );
+}
 
   Widget notificationTile(String title, String description, String time) {
     return ListTile(
