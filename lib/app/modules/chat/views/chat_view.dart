@@ -44,7 +44,9 @@ class ChatPage extends StatelessWidget {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
         ),
       ),
       body: Column(
@@ -301,10 +303,13 @@ class ChatPage extends StatelessWidget {
       ),
     );
   }
-}Widget _buildAudioBubble(File audioFile, DateTime timestamp) {
+}
+
+Widget _buildAudioBubble(File audioFile, DateTime timestamp) {
   String formattedTime = DateFormat('hh:mm a').format(timestamp);
-  
-  final AudioPlayer audioPlayer = AudioPlayer(); // Gunakan instance yang sudah ada
+
+  final AudioPlayer audioPlayer =
+      AudioPlayer(); // Gunakan instance yang sudah ada
 
   return Align(
     alignment: Alignment.centerRight,
@@ -330,7 +335,7 @@ class ChatPage extends StatelessWidget {
             onPressed: () async {
               try {
                 // Jika audio sedang diputar, hentikan dulu
-                await audioPlayer.stop(); 
+                await audioPlayer.stop();
 
                 // Pastikan audio file ada dan bisa diputar
                 bool fileExists = await audioFile.exists();
@@ -355,8 +360,6 @@ class ChatPage extends StatelessWidget {
     ),
   );
 }
-
-
 
 class VideoBubble extends StatefulWidget {
   final File video;

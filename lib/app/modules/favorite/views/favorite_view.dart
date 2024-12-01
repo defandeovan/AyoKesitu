@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:project_flutter/app/modules/home/views/location_view.dart';
 
 import '../controllers/favorite_controller.dart';
 
@@ -14,10 +15,7 @@ class FavoriteView extends GetView<FavoriteController> {
         centerTitle: true,
       ),
       body: const Center(
-        child: Text(
-          'FavoriteView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+        
       ),
     );
   }

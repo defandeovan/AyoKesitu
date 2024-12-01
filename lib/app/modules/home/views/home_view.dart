@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:project_flutter/app/modules/booking/views/booking_view.dart';
 import 'package:project_flutter/app/modules/favorite/views/favorite_view.dart';
+import 'package:project_flutter/app/modules/home/views/location_view.dart';
 import 'package:project_flutter/app/modules/messages/views/messages_view.dart';
 import 'package:project_flutter/app/modules/profile/views/profile_view.dart';
 import 'package:project_flutter/app/data/Destination.dart';
@@ -36,7 +37,6 @@ class _HomeViewState extends State<HomeView>
       ProfileView(userId: widget.userId), // Placeholder for other tab content
     ];
   }
-  
 
   Widget _buildDestinationContent() {
     return SingleChildScrollView(
@@ -44,6 +44,9 @@ class _HomeViewState extends State<HomeView>
         children: [
           SizedBox(height: 50),
           _buildSearchBar(),
+
+          const LocationView(), // Here LocationView is embedded
+
           Obx(
             () {
               if (homeController.isLoading.value) {
@@ -71,13 +74,22 @@ class _HomeViewState extends State<HomeView>
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Popular Destinations",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        SizedBox(height: 8),
-                        _buildPopularList(destinations),
+                        Container(
+                           // Warna untuk debugging
+                          child: Text("Popular Destinations",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                        ),
+                        Container(
+                         
+                          constraints: BoxConstraints(
+                              maxHeight:
+                                  500), // Warna untuk memastikan jarak widget
+                          child: _buildPopularList(destinations),
+                        )
                       ],
                     ),
                   ),
@@ -245,7 +257,8 @@ class _HomeViewState extends State<HomeView>
 
   // Vertical list for popular destinations
   Widget _buildPopularList(List<Destination> destinations) {
-    return ListView.builder(
+    return Flexible(
+        child: ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemCount: destinations.length,
@@ -261,12 +274,12 @@ class _HomeViewState extends State<HomeView>
             );
           },
           child: Card(
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            margin: EdgeInsets.zero,
             child: Container(
               width: 355,
               height: 160,
-              margin: EdgeInsets.only(bottom: 16),
-              padding: EdgeInsets.all(12),
+              // margin: EdgeInsets.only(bottom: 16),
+              padding: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
@@ -329,7 +342,7 @@ class _HomeViewState extends State<HomeView>
           ),
         );
       },
-    );
+    ));
   }
 
   void _onItemTapped(int index) {
@@ -345,34 +358,32 @@ class _HomeViewState extends State<HomeView>
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    body: _widgetOptions[_selectedIndex],
-    bottomNavigationBar: BottomNavigationBar(
-      items: [
-        BottomNavigationBarItem(
-            icon: _buildBottomNavItem('assets/img/home-2.svg', 0),
-            label: 'home'),
-        BottomNavigationBarItem(
-            icon: _buildBottomNavItem('assets/img/Heart.svg', 1),
-            label: 'favorite'),
-        BottomNavigationBarItem(
-            icon: _buildBottomNavItem('assets/img/clock.svg', 2),
-            label: ''),
-        BottomNavigationBarItem(
-            icon: _buildBottomNavItem('assets/img/user copy.svg', 3),
-            label: ''),
-      ],
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      backgroundColor: Colors.white,
-      elevation: 0,
-    ),
-  );
-}
-
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _widgetOptions[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+              icon: _buildBottomNavItem('assets/img/home-2.svg', 0),
+              label: 'home'),
+          BottomNavigationBarItem(
+              icon: _buildBottomNavItem('assets/img/Heart.svg', 1),
+              label: 'favorite'),
+          BottomNavigationBarItem(
+              icon: _buildBottomNavItem('assets/img/clock.svg', 2), label: ''),
+          BottomNavigationBarItem(
+              icon: _buildBottomNavItem('assets/img/user copy.svg', 3),
+              label: ''),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+    );
+  }
 
   Widget _buildBottomNavItem(String assetPath, int index) {
     return Container(
