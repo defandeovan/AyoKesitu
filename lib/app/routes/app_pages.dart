@@ -18,7 +18,8 @@ import '../modules/calendar/bindings/calendar_binding.dart';
 import '../modules/calendar/views/calendar_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
-
+import '../modules/connection/bindings/connection_binding.dart';
+import '../modules/connection/views/no_connection_view.dart';
 import '../modules/destination/bindings/destination_binding.dart';
 import '../modules/destination/views/destination_view.dart';
 import '../modules/editprofile/bindings/editprofile_binding.dart';
@@ -53,13 +54,14 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.BOARDING;
+  static const INITIAL = Routes.ADD_DEST;
 
   static final routes = [
     GetPage(
       name: _Paths.HOME,
       page: () {
         final args = Get.arguments;
+
         final userId = args['userId'];
         return HomeView(userId: userId);
       },
@@ -101,7 +103,6 @@ class AppPages {
           lastName: lastName,
           email: email,
           phoneNumber: phoneNumber,
-          
         );
       },
       binding: EditprofileBinding(),
@@ -191,6 +192,11 @@ class AppPages {
       name: _Paths.CHAT,
       page: () => ChatPage(),
       binding: ChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONNECTION,
+      page: () => const NoConnectionView(),
+      binding: ConnectionBinding(),
     ),
   ];
 }

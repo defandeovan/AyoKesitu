@@ -23,7 +23,7 @@ abstract class Routes {
   static const CALENDAR = _Paths.CALENDAR;
   static const CHAT = _Paths.CHAT;
   static const CHATSCREEN = _Paths.CHATSCREEN;
-
+  static const CONNECTION = _Paths.CONNECTION;
 }
 
 abstract class _Paths {
@@ -48,5 +48,5 @@ abstract class _Paths {
   static const CALENDAR = '/calendar';
   static const CHAT = '/chat';
   static const CHATSCREEN = '/chatscreen';
-
+  static const CONNECTION = '/connection';
 }

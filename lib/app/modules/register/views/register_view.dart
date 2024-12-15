@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:project_flutter/app/routes/app_pages.dart';
 
-
-
 class RegisterView extends StatefulWidget {
   @override
   _RegisterViewState createState() => _RegisterViewState();
@@ -14,10 +12,27 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _fnameController = TextEditingController();
   final TextEditingController _lnameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  void _hideLoadingDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
 
   /// Kontroler untuk nama
 
@@ -44,6 +59,7 @@ class _RegisterViewState extends State<RegisterView> {
       );
       return;
     }
+     _showLoadingDialog(context);
 
     try {
       UserCredential userCredential =
@@ -108,6 +124,7 @@ class _RegisterViewState extends State<RegisterView> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
