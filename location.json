@@ -1,0 +1,184 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "name": "Bali",
+      "coordinates": {
+        "latitude": -8.3405,
+        "longitude": 115.0920
+      },
+      "description": "A tropical island known for its beaches, culture, and scenic views."
+    },
+    {
+      "id": 2,
+      "name": "Jakarta",
+      "coordinates": {
+        "latitude": -6.2088,
+        "longitude": 106.8456
+      },
+      "description": "The bustling capital city of Indonesia, offering vibrant shopping, historical landmarks, and cultural sites."
+    },
+    {
+      "id": 3,
+      "name": "Yogyakarta",
+      "coordinates": {
+        "latitude": -7.7956,
+        "longitude": 110.3695
+      },
+      "description": "Known for its cultural heritage, including the ancient temples of Borobudur and Prambanan."
+    },
+    {
+      "id": 4,
+      "name": "Bandung",
+      "coordinates": {
+        "latitude": -6.9175,
+        "longitude": 107.6191
+      },
+      "description": "Famous for its cool climate, shopping outlets, and natural beauty like Tangkuban Perahu Volcano."
+    },
+    {
+      "id": 5,
+      "name": "Lombok",
+      "coordinates": {
+        "latitude": -8.5833,
+        "longitude": 116.2333
+      },
+      "description": "A beautiful island with pristine beaches, including Gili Islands and Mount Rinjani, known for trekking adventures."
+    },
+    {
+      "id": 6,
+      "name": "Komodo Island",
+      "coordinates": {
+        "latitude": -8.5726,
+        "longitude": 119.5320
+      },
+      "description": "Famous for the Komodo dragons, this island also offers stunning dive spots and natural beauty."
+    },
+    {
+      "id": 7,
+      "name": "Raja Ampat",
+      "coordinates": {
+        "latitude": -0.2350,
+        "longitude": 130.0850
+      },
+      "description": "A renowned diving destination with incredible coral reefs, beaches, and underwater biodiversity."
+    },
+    {
+      "id": 8,
+      "name": "Labuan Bajo",
+      "coordinates": {
+        "latitude": -8.4973,
+        "longitude": 119.8802
+      },
+      "description": "The gateway to Komodo Island and known for its stunning scenery, beaches, and diving spots."
+    },
+    {
+      "id": 9,
+      "name": "Tana Toraja",
+      "coordinates": {
+        "latitude": -3.0675,
+        "longitude": 119.8194
+      },
+      "description": "Famous for its traditional burial sites, architecture, and the unique culture of the Toraja people."
+    },
+    {
+      "id": 10,
+      "name": "Mount Bromo",
+      "coordinates": {
+        "latitude": -7.9425,
+        "longitude": 112.9530
+      },
+      "description": "An active volcano in East Java, known for its stunning sunrise views and nearby Tengger Sand Sea."
+    },
+    {
+      "id": 11,
+      "name": "Bukit Tinggi",
+      "coordinates": {
+        "latitude": -0.2953,
+        "longitude": 100.3693
+      },
+      "description": "A highland city in West Sumatra, famous for its cool climate, traditional Minangkabau culture, and culinary offerings."
+    },
+    {
+      "id": 12,
+      "name": "Belitung Island",
+      "coordinates": {
+        "latitude": -2.9448,
+        "longitude": 107.6362
+      },
+      "description": "Known for its white sandy beaches, crystal clear waters, and granite rock formations."
+    },
+    {
+      "id": 13,
+      "name": "Ubud",
+      "coordinates": {
+        "latitude": -8.5060,
+        "longitude": 115.2622
+      },
+      "description": "The cultural heart of Bali, known for its art, rice terraces, and spiritual attractions like temples and yoga retreats."
+    },
+    {
+      "id": 14,
+      "name": "Maluku Islands",
+      "coordinates": {
+        "latitude": -3.6945,
+        "longitude": 128.3141
+      },
+      "description": "An archipelago known for its beautiful coral reefs, beaches, and the historically significant spice trade."
+    },
+    {
+      "id": 15,
+      "name": "The Thousand Islands (Kepulauan Seribu)",
+      "coordinates": {
+        "latitude": -5.6228,
+        "longitude": 106.6162
+      },
+      "description": "An island chain located north of Jakarta, famous for its clear waters, marine life, and resorts."
+    },
+    {
+      "id": 16,
+      "name": "Pura Tanah Lot",
+      "coordinates": {
+        "latitude": -8.6221,
+        "longitude": 115.0870
+      },
+      "description": "A sea temple perched on a rock, a popular tourist spot in Bali known for its breathtaking sunset views."
+    },
+    {
+      "id": 17,
+      "name": "Bunaken National Park",
+      "coordinates": {
+        "latitude": 1.6212,
+        "longitude": 124.8334
+      },
+      "description": "A world-class dive spot in North Sulawesi, known for its rich marine biodiversity and coral reefs."
+    },
+    {
+      "id": 18,
+      "name": "Taman Safari",
+      "coordinates": {
+        "latitude": -6.6537,
+        "longitude": 106.9899
+      },
+      "description": "A popular safari park with over 250 species of animals from around the world, located in West Java."
+    },
+    {
+      "id": 19,
+      "name": "Mount Rinjani",
+      "coordinates": {
+        "latitude": -8.4140,
+        "longitude": 116.4700
+      },
+      "description": "An active volcano in Lombok, famous for trekking, crater lakes, and stunning landscapes."
+    },
+    {
+      "id": 20,
+      "name": "Gili Islands",
+      "coordinates": {
+        "latitude": -8.3580,
+        "longitude": 116.0148
+      },
+      "description": "Known for its clear waters, vibrant coral reefs, and relaxed atmosphere, a perfect destination for diving and snorkeling."
+    }
+  ]
+}

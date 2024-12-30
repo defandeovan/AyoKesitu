@@ -27,7 +27,7 @@ dependencies:
   get: ^4.6.6
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.1
-  firebase_messaging: ^15.1.4
+  firebase_messaging: ^15.1.6
   flutter_local_notifications: ^18.0.1
   cloud_firestore: ^5.4.4
   firebase_storage: ^12.3.4
@@ -52,6 +52,10 @@ dependencies:
   geocoding: ^3.0.0
   geolocator: ^13.0.2
   connectivity_plus: ^6.1.1
+  webview_flutter: ^4.10.0
+  http: ^1.2.2
+  googleapis: ^13.2.0
+  flutter_typeahead: ^5.2.0
   
   
 
@@ -114,6 +118,7 @@ flutter:
     - assets/img/mic.svg
     - assets/img/send_chat.svg
     - assets/img/add.svg
+    - assets/sounds/musik_mobile.mp3 
   fonts:
     - family: WorkSans
       fonts:

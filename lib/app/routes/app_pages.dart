@@ -24,8 +24,7 @@ import '../modules/destination/bindings/destination_binding.dart';
 import '../modules/destination/views/destination_view.dart';
 import '../modules/editprofile/bindings/editprofile_binding.dart';
 import '../modules/editprofile/views/editprofile_view.dart';
-import '../modules/favorite/bindings/favorite_binding.dart';
-import '../modules/favorite/views/favorite_view.dart';
+
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -54,7 +53,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.ADD_DEST;
+  static const INITIAL = Routes.BOARDING;
 
   static final routes = [
     GetPage(
@@ -109,7 +108,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SETTING,
-      page: () => SettingView(),
+      page: () => SettingtView(),
       binding: SettingBinding(),
     ),
     GetPage(
@@ -145,7 +144,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.YOUR_ORDER,
-      page: () => const YourOrderView(),
+      page: () =>  YourOrderPage(),
       binding: YourOrderBinding(),
     ),
     GetPage(
@@ -178,11 +177,7 @@ class AppPages {
       page: () => ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
     ),
-    GetPage(
-      name: _Paths.FAVORITE,
-      page: () => const FavoriteView(),
-      binding: FavoriteBinding(),
-    ),
+   
     GetPage(
       name: _Paths.CALENDAR,
       page: () => const CalendarView(),

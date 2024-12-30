@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:project_flutter/app/data/Bukit.dart';
+import 'package:project_flutter/app/data/Danau.dart';
+import 'package:project_flutter/app/data/Hutan.dart';
+import 'package:project_flutter/app/data/Mountain.dart';
+import 'package:project_flutter/app/data/Pantai.dart';
+import 'package:project_flutter/app/modules/Favorite/Favorite_view.dart';
 import 'package:project_flutter/app/modules/booking/views/booking_view.dart';
-import 'package:project_flutter/app/modules/favorite/views/favorite_view.dart';
+
 import 'package:project_flutter/app/modules/home/views/location_view.dart';
 import 'package:project_flutter/app/modules/messages/views/messages_view.dart';
 import 'package:project_flutter/app/modules/profile/views/profile_view.dart';
@@ -24,6 +30,16 @@ class _HomeViewState extends State<HomeView>
   int _selectedIndex = 0;
   late List<Widget> _widgetOptions;
   TextEditingController _searchController = TextEditingController();
+  final List<Widget> pages = [
+    const Mountain(title: 'Halaman 1'),
+    const Pantai(title: 'Halaman 2'),
+    const Danau(title: 'Halaman 3'),
+    const Hutan(title: 'Halaman 4'),
+    const Bukit(title: 'Halaman 5')
+  ];
+
+  // Daftar teks yang berbeda untuk kotak oval
+  final List<String> texts = ["Gunung", "Pantai", "Danau", "Hutan", "Bukit"];
 
   @override
   void initState() {
@@ -44,9 +60,49 @@ class _HomeViewState extends State<HomeView>
         children: [
           SizedBox(height: 50),
           _buildSearchBar(),
-
-          const LocationView(), // Here LocationView is embedded
-
+          SizedBox(height: 10),
+          const LocationView(),
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal, // Menentukan scroll horizontal
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start, // Align Row ke kiri
+                children: List.generate(
+                  texts
+                      .length, // Menggunakan texts.length agar sesuai dengan jumlah teks
+                  (index) => GestureDetector(
+                    onTap: () {
+                      // Navigasi ke halaman tertentu berdasarkan index
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => pages[index],
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: 100, // Lebar oval
+                      height: 30, // Tinggi oval
+                      margin: EdgeInsets.only(right: 8.0), // Jarak antar oval
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(
+                            255, 161, 161, 161), // Warna oval
+                        borderRadius: BorderRadius.circular(20), // Membuat oval
+                      ),
+                      child: Center(
+                        child: Text(
+                          texts[index], // Teks sesuai dengan daftar 'texts'
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           Obx(
             () {
               if (homeController.isLoading.value) {
@@ -78,18 +134,22 @@ class _HomeViewState extends State<HomeView>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                           // Warna untuk debugging
+                          // Warna untuk debugging
                           child: Text("Popular Destinations",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                         ),
-                        Container(
-                         
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  500), // Warna untuk memastikan jarak widget
-                          child: _buildPopularList(destinations),
-                        )
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            double maxHeight = constraints.maxHeight < 100000
+                                ? constraints.maxHeight
+                                : 100000;
+                            return Container(
+                              constraints: BoxConstraints(maxHeight: maxHeight),
+                              child: _buildPopularList(destinations),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -223,26 +283,20 @@ class _HomeViewState extends State<HomeView>
                     Positioned(
                       top: 10,
                       right: 10,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(0.5),
-                                    blurRadius: 4,
-                                    offset: Offset(0, 4))
-                              ],
-                            ),
-                          ),
-                          SvgPicture.asset('assets/img/favorite.svg',
-                              width: 24, height: 24, color: Colors.red),
-                        ],
+                      child: GestureDetector(
+                        onTap: () {
+                          homeController.toggleFavorite(destination);
+                        },
+                        child: Obx(() {
+                          bool isFavorite =
+                              homeController.favorites.contains(destination);
+                          return SvgPicture.asset(
+                            'assets/img/favorite.svg',
+                            width: 24,
+                            height: 24,
+                            color: isFavorite ? Colors.red : Colors.grey,
+                          );
+                        }),
                       ),
                     ),
                   ],
@@ -370,7 +424,7 @@ class _HomeViewState extends State<HomeView>
               icon: _buildBottomNavItem('assets/img/Heart.svg', 1),
               label: 'favorite'),
           BottomNavigationBarItem(
-              icon: _buildBottomNavItem('assets/img/clock.svg', 2), label: ''),
+              icon: _buildBottomNavItem('assets/img/send_chat.svg', 2), label: ''),
           BottomNavigationBarItem(
               icon: _buildBottomNavItem('assets/img/user copy.svg', 3),
               label: ''),

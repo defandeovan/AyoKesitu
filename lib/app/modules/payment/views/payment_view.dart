@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:project_flutter/app/modules/payment/views/confirm.dart';
-
 
 class PaymentView extends StatefulWidget {
   @override
@@ -10,6 +10,20 @@ class PaymentView extends StatefulWidget {
 
 class _MyCheckoutPageState extends State<PaymentView> {
   bool isChecked = false;
+  final box = GetStorage();
+  Map<String, dynamic>? orderData;
+
+  @override
+  void initState() {
+    super.initState();
+    // Ambil seluruh data orders dari GetStorage
+    List<Map<String, dynamic>> orders = box.read('orders') ?? [];
+    // Pilih data terbaru (elemen terakhir dari daftar)
+    if (orders.isNotEmpty) {
+      orderData = orders.last;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,48 +36,68 @@ class _MyCheckoutPageState extends State<PaymentView> {
         ),
         title: Text('Checkout'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+     body: SingleChildScrollView(
+  child: Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Semua konten di dalam Column tetap sama
+        StepperWidget(),
+        SizedBox(height: 16),
+        if (orderData != null) ...[
+          Text(
+            'Order Summary',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Text('Destination: ${orderData!['destination']}'),
+          Text('Price: ${orderData!['price']}'),
+          Text('Date: ${orderData!['date']}'),
+          SizedBox(height: 16),
+        ],
+        Text(
+          'Select a payment method',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        Text('Please select a payment method most convenient to you.'),
+        SizedBox(height: 16),
+        PaymentMethodWidget(),
+        SizedBox(height: 16),
+        PaymentForm(),
+        SizedBox(height: 16),
+        Row(
           children: [
-            StepperWidget(),
-            SizedBox(height: 16),
-            Text(
-              'Select a payment method',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            Checkbox(
+              value: isChecked,
+              onChanged: (bool? value) {
+                setState(() {
+                  isChecked = value!;
+                });
+              },
             ),
-            SizedBox(height: 8),
-            Text('Please select a payment method most convenient to you.'),
-            SizedBox(height: 16),
-            PaymentMethodWidget(),
-            SizedBox(height: 16),
-            PaymentForm(),
-            SizedBox(height: 16),
-            Row(
-              children: [
-                Checkbox(value: isChecked, onChanged: (bool? value) {setState(() {
-              isChecked = value!; // ubah status checkbox
-            });}),
-                Text("My billing address is the same as my shipping address."),
-              ],
-            ),
-            SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Get.to(CheckoutConfirmationPage());
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-                ),
-                child: Text('Confirm'),
-              ),
-            ),
+            Text("My billing."),
           ],
         ),
-      ),
+        SizedBox(height: 16),
+        Center(
+          child: ElevatedButton(
+            onPressed: () {
+              Get.to(CheckoutConfirmationPage());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+            ),
+            child: Text('Confirm'),
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
     );
   }
 }
@@ -136,24 +170,32 @@ class PaymentForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
-          decoration: InputDecoration(border :OutlineInputBorder(borderRadius: BorderRadius.circular(10)),labelText: 'Credit Card'),
+          decoration: InputDecoration(
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              labelText: 'Credit Card'),
         ),
         SizedBox(height: 16),
         TextFormField(
-          decoration: InputDecoration(border :OutlineInputBorder(borderRadius: BorderRadius.circular(10)),labelText: 'Name'),
+          decoration: InputDecoration(
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              labelText: 'Name'),
         ),
         SizedBox(height: 16),
         Row(
           children: [
             Expanded(
               child: TextFormField(
-                decoration: InputDecoration(border :OutlineInputBorder(borderRadius: BorderRadius.circular(10)), labelText: 'Expiration Date'),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    labelText: 'Expiration Date'),
               ),
             ),
             SizedBox(width: 16),
             Expanded(
               child: TextFormField(
-                decoration: InputDecoration(border :OutlineInputBorder(borderRadius: BorderRadius.circular(10)),labelText: 'CVV'),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    labelText: 'CVV'),
               ),
             ),
           ],

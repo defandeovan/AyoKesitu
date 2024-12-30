@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_flutter/app/data/Databese_Service.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'package:project_flutter/app/modules/addDest/views/offline.dart';
+import 'package:project_flutter/app/modules/addDest/controllers/offline.dart';
 
 class AddDestView extends StatefulWidget {
   @override

@@ -177,7 +177,7 @@ class _ProfileViewState extends State<ProfileView> {
             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                Get.to(YourOrderView());
+                Get.to(YourOrderPage());
               },
               child: Container(
                 width: 295,

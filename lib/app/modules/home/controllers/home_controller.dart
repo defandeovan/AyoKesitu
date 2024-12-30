@@ -4,6 +4,7 @@ import 'package:project_flutter/app/data/Destination.dart';
 
 class HomeController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  var favorites = <Destination>[].obs;
 
   // Observable variables
   var destinations = <Destination>[].obs;
@@ -24,11 +25,20 @@ class HomeController extends GetxController {
     fetchDestinations();
   }
 
+  void toggleFavorite(Destination destination) {
+    if (favorites.contains(destination)) {
+      favorites.remove(destination);
+    } else {
+      favorites.add(destination);
+    }
+  }
+
   // Fungsi untuk mengambil userId dari Firestore
   void fetchUserId() async {
     try {
       // Misalnya, kita ambil dari koleksi "users" dan dokumen tertentu
-      var userDoc = await _firestore.collection('users').doc('userDocumentId').get();
+      var userDoc =
+          await _firestore.collection('users').doc('userDocumentId').get();
       if (userDoc.exists) {
         userId.value = userDoc.data()?['userId'] ?? '';
       }
@@ -39,12 +49,11 @@ class HomeController extends GetxController {
 
   // Fetch data dari Firestore
   void fetchDestinations() {
-    isLoading.value = true;  // Menandakan data sedang dimuat
+    isLoading.value = true; // Menandakan data sedang dimuat
     _firestore.collection('destinations').snapshots().listen((snapshot) {
-      destinations.value = snapshot.docs
-          .map((doc) => Destination.fromFirestore(doc))
-          .toList();
-      isLoading.value = false;  // Data selesai dimuat
+      destinations.value =
+          snapshot.docs.map((doc) => Destination.fromFirestore(doc)).toList();
+      isLoading.value = false; // Data selesai dimuat
     });
   }
 

@@ -1,13 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:project_flutter/app/data/Destination.dart';
-
-
+import 'package:project_flutter/app/modules/payment/views/confirm.dart';
+import 'package:project_flutter/app/modules/payment/views/payment_view.dart';
 
 class BookingView extends StatelessWidget {
-  // Firestore instance
-  
+  final box = GetStorage(); // Inisialisasi GetStorage
+
+  // Menyimpan data orderan ke GetStorage
+ void saveOrderData(Map<String, dynamic> orderData) {
+  // Ambil daftar order dari GetStorage
+  final data = box.read('orders'); // Membaca data dari GetStorage
+  List<Map<String, dynamic>> orders = [];
+
+  if (data != null && data is List) {
+    // Validasi tipe data dan konversi
+    orders = data
+        .map((e) => e is Map<String, dynamic> ? e : {})
+        .toList()
+        .cast<Map<String, dynamic>>();
+  }
+
+  // Tambahkan data pesanan baru ke dalam daftar
+  orders.add(orderData);
+
+  // Simpan kembali daftar pesanan ke GetStorage
+  box.write('orders', orders);
+}
+
+
+  // Membaca data orderan dari GetStorage
+  List<Map<String, dynamic>> getOrderData() {
+    return box.read('orders') ?? [];
+  }
+
   final Destination destination;
 
   BookingView({required this.destination});
@@ -186,7 +216,20 @@ class BookingView extends StatelessWidget {
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Data order baru
+                    Map<String, dynamic> order = {
+                      'destination': destination.name,
+                      'price': destination.price,
+                      'date': DateTime.now().toString(),
+                    };
+
+                    // Simpan data order
+                    saveOrderData(order);
+
+                    // Arahkan ke halaman pembayaran
+                    Get.to(() => PaymentView());
+                  },
                   child: Text(
                     'Booking',
                     style: TextStyle(color: Colors.white),

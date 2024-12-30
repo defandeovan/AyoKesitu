@@ -3,26 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_flutter/app/modules/payment/views/success.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CheckoutConfirmationPage(),
-    );
-  }
-}
+import 'package:get_storage/get_storage.dart';
 
 class CheckoutConfirmationPage extends StatelessWidget {
   CheckoutConfirmationPage({super.key});
 
   final AudioPlayer _audioPlayer = AudioPlayer();
+  final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
+    // Ambil data terbaru dari GetStorage
+    List<dynamic> latestOrders = box.read<List<dynamic>>('orders') ?? [];
+    // Data terbaru (misalnya, data terakhir dalam list)
+    var latestOrder = latestOrders.isNotEmpty ? latestOrders.last : null;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -52,7 +47,9 @@ class CheckoutConfirmationPage extends StatelessWidget {
             SizedBox(height: 16),
 
             // Payment summary
-            PaymentSummary(),
+            latestOrder != null
+                ? PaymentSummary(orderData: latestOrder)
+                : Text("No order data available."),
             SizedBox(height: 16),
 
             // Confirmation text
@@ -93,10 +90,10 @@ class CheckoutConfirmationPage extends StatelessWidget {
                         .play(AssetSource('sounds/musik_mobile.mp3'));
                     print('Audio playing...');
                   } catch (e) {
-                    print("erorrrrrr : $e");
+                    print("Error : $e");
                   }
                   _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
-                    print('Status pemutar: $state');
+                    print('Player status: $state');
                   });
                   Get.to(() => PaymentSuccessPage());
                 },
@@ -109,25 +106,12 @@ class CheckoutConfirmationPage extends StatelessWidget {
   }
 }
 
-// Stepper Circle Widget
-class StepCircle extends StatelessWidget {
-  final bool isActive;
-  final String label;
-
-  StepCircle({required this.isActive, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 18,
-      backgroundColor: isActive ? Colors.blue : Colors.grey[300],
-      child: Text(label, style: TextStyle(color: Colors.white)),
-    );
-  }
-}
-
-// Payment Summary Widget
+// Update PaymentSummary untuk menerima data dinamis
 class PaymentSummary extends StatelessWidget {
+  final Map<String, dynamic> orderData;
+
+  PaymentSummary({required this.orderData});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -145,15 +129,22 @@ class PaymentSummary extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Subtotal'),
-              Text('2.990.000'),
+              Text('Destination'),
+              Text(orderData['destination'] ?? 'Unknown'),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Delivery'),
-              Text('2.500'),
+              Text('Price'),
+              Text('${orderData['price'] ?? 0}'),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Date'),
+              Text(orderData['date'] ?? 'Unknown'),
             ],
           ),
           Divider(),
@@ -161,11 +152,30 @@ class PaymentSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Total', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('2.992.500', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('${orderData['total'] ?? 0}',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+
+// Stepper Circle Widget
+class StepCircle extends StatelessWidget {
+  final bool isActive;
+  final String label;
+
+  StepCircle({required this.isActive, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 18,
+      backgroundColor: isActive ? Colors.blue : Colors.grey[300],
+      child: Text(label, style: TextStyle(color: Colors.white)),
     );
   }
 }
