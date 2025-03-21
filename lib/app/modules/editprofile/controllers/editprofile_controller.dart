@@ -1,59 +1,122 @@
-import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:get_storage/get_storage.dart';
+import 'dart:io';
+
+import 'package:project_flutter/app/data/ProfileData.dart';
+import 'package:project_flutter/app/data/cloudimgprofile.dart';
+import 'package:project_flutter/app/modules/home/views/home_view.dart';
+import 'package:project_flutter/app/modules/profile/views/profile_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditprofileController extends GetxController {
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
+  var selectedImage = Rxn<File>();
+  var imageUrl = ''.obs;
 
-  final box = GetStorage(); 
-  Rx<File?> selectedImage = Rx<File?>(null);
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneNumberController = TextEditingController();
 
-  void initializeData({
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String phoneNumber,
-  }) {
-    firstNameController.text = firstName;
-    lastNameController.text = lastName;
-    emailController.text = email;
-    phoneNumberController.text = phoneNumber;
+  final CloudinaryServiceProfile _cloudinaryService =
+      CloudinaryServiceProfile();
 
-    // Load image from GetStorage if exists
-    String? imagePath = box.read('profile_image');
-    if (imagePath != null) {
-      selectedImage.value = File(imagePath);
+  var isLoading = false.obs; // Menggunakan RxBool
+
+  // Inisialisasi data profil dari Firestore
+  void initializeData(String userId) async {
+    try {
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (doc.exists) {
+        Profile profile = Profile.fromFirestore(doc);
+        firstNameController.text = profile.firstName;
+        lastNameController.text = profile.lastName;
+        emailController.text = profile.email;
+        phoneNumberController.text = profile.telp;
+        imageUrl.value = profile.img ?? '';
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to load profile data');
     }
   }
 
   Future<void> pickImage(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: source);
-
-    if (image != null) {
-      selectedImage.value = File(image.path);
-
-      // Save image path to GetStorage
-      box.write('profile_image', image.path);
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      selectedImage.value = File(pickedFile.path);
+      isLoading.value = true;
+      try {
+        String uploadedImageUrl =
+            await _cloudinaryService.uploadImage(pickedFile.path);
+        imageUrl.value = uploadedImageUrl;
+        await _saveStatus('success');
+      } catch (e) {
+        Get.snackbar('Upload Failed', 'Failed to upload image');
+        await _saveStatus('failed');
+      } finally {
+        isLoading.value = false;
+      }
+    } else {
+      await _saveStatus('cancel');
+      Get.snackbar('No image selected', 'Please select an image.');
     }
   }
 
-  void saveChanges() {
-    String updatedFirstName = firstNameController.text;
-    String updatedLastName = lastNameController.text;
-    String updatedPhoneNumber = phoneNumberController.text;
+  Future<void> saveChanges(String userId) async {
+    if (isLoading.value) return;
+    String imgdef =
+        'https://res.cloudinary.com/db5vhptv9/image/upload/v1742273212/profile_tuvqab.svg';
+    isLoading.value = true;
+    if (imageUrl.value.isEmpty) {
+      try {
+        Profile updatedProfile = Profile(
+          id: userId,
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          email: emailController.text,
+          telp: phoneNumberController.text,
+          img: imgdef,
+        );
 
-    // Save to GetStorage (or any other storage solution)
-    box.write('first_name', updatedFirstName);
-    box.write('last_name', updatedLastName);
-    box.write('phone_number', updatedPhoneNumber);
+        await updatedProfile.updateProfile();
+        Get.snackbar('Success', 'Profile updated successfully');
+      } catch (e) {
+        Get.snackbar('Error', 'Failed to update profile');
+      } finally {
+        isLoading.value = false;
+        Get.to(() => HomeView(userId: userId), arguments: {'selectedIndex': 3});
+      }
+    }else{
+       try {
+        Profile updatedProfile = Profile(
+          id: userId,
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          email: emailController.text,
+          telp: phoneNumberController.text,
+          img: imageUrl.value,
+        );
 
-    // Navigate back
-    Get.back();
+        await updatedProfile.updateProfile();
+        Get.snackbar('Success', 'Profile updated successfully');
+      } catch (e) {
+        Get.snackbar('Error', 'Failed to update profile');
+      } finally {
+        isLoading.value = false;
+        Get.to(() => HomeView(userId: userId), arguments: {'selectedIndex': 3});
+      }
+    }
+   
+
+  }
+
+  Future<void> _saveStatus(String status) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('stsupld', status);
+    print("✅ Status upload berhasil disimpan: $status");
   }
 }

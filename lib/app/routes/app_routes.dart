@@ -24,6 +24,9 @@ abstract class Routes {
   static const CHAT = _Paths.CHAT;
   static const CHATSCREEN = _Paths.CHATSCREEN;
   static const CONNECTION = _Paths.CONNECTION;
+  static const ADMIN = _Paths.ADMIN;
+  static const CHECKDATA = _Paths.CHECKDATA;
+  static const REFRESH = _Paths.REFRESH;
 }
 
 abstract class _Paths {
@@ -49,4 +52,7 @@ abstract class _Paths {
   static const CHAT = '/chat';
   static const CHATSCREEN = '/chatscreen';
   static const CONNECTION = '/connection';
+  static const ADMIN = '/admin';
+  static const CHECKDATA = '/checkdata';
+  static const REFRESH = '/refresh';
 }

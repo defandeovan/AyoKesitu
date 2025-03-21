@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_flutter/app/routes/app_pages.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'package:project_flutter/homebody.dart';
 
 class BoardingNextView extends StatelessWidget {
+  String status = 'yes';
+
   @override
+  Future<void> _saveText() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('status', status);
+    print("User sudah di ingat");
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -45,6 +53,7 @@ class BoardingNextView extends StatelessWidget {
                     children: <Widget>[
                       ElevatedButton(
                         onPressed: () {
+                          _saveText();
                           Get.toNamed(Routes.LOGIN);
                         },
                         child: Text('Sign In'),

@@ -8,6 +8,8 @@ import '../data/DestinasiService.dart';
 import '../data/Destination.dart';
 import '../modules/addDest/bindings/add_dest_binding.dart';
 import '../modules/addDest/views/add_dest_view.dart';
+import '../modules/admin/bindings/admin_binding.dart';
+import '../modules/admin/views/admin_view.dart';
 import '../modules/boarding/bindings/boarding_binding.dart';
 import '../modules/boarding/views/boarding_view.dart';
 import '../modules/boardingNext/bindings/boarding_next_binding.dart';
@@ -18,13 +20,14 @@ import '../modules/calendar/bindings/calendar_binding.dart';
 import '../modules/calendar/views/calendar_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
+import '../modules/checkdata/bindings/checkdata_binding.dart';
+import '../modules/checkdata/views/checkdata_view.dart';
 import '../modules/connection/bindings/connection_binding.dart';
 import '../modules/connection/views/no_connection_view.dart';
 import '../modules/destination/bindings/destination_binding.dart';
 import '../modules/destination/views/destination_view.dart';
 import '../modules/editprofile/bindings/editprofile_binding.dart';
 import '../modules/editprofile/views/editprofile_view.dart';
-
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -39,6 +42,8 @@ import '../modules/payment/bindings/payment_binding.dart';
 import '../modules/payment/views/payment_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/refresh/bindings/refresh_binding.dart';
+import '../modules/refresh/views/refresh_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/setting/bindings/setting_binding.dart';
@@ -53,18 +58,37 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.BOARDING;
+  static const INITIAL = Routes.CHECKDATA;
 
   static final routes = [
     GetPage(
       name: _Paths.HOME,
       page: () {
         final args = Get.arguments;
-
-        final userId = args['userId'];
+         final userId = args?['userId'];
         return HomeView(userId: userId);
       },
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.REFRESH,
+      page: () => const RefreshView(),
+      binding: RefreshBinding(),
+    ),
+   
+    GetPage(
+      name: _Paths.CHECKDATA,
+      page: () => CheckdataView(),
+      binding: CheckdataBinding(),
+    ),
+
+    GetPage(
+      name: _Paths.ADMIN,
+      page: () { final args = Get.arguments;
+         final userId = args?['userId'];
+        return AdminView(userId: userId);
+      },
+      binding: AdminBinding(),
     ),
     GetPage(
       name: _Paths.REGISTER,
@@ -98,10 +122,6 @@ class AppPages {
 
         return EditprofileView(
           userId: userId,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phoneNumber: phoneNumber,
         );
       },
       binding: EditprofileBinding(),
@@ -144,7 +164,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.YOUR_ORDER,
-      page: () =>  YourOrderPage(),
+      page: () => YourOrderPage(),
       binding: YourOrderBinding(),
     ),
     GetPage(
@@ -169,7 +189,14 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MESSAGES,
-      page: () => MessagesView(),
+      page: () {
+        final args = Get.arguments;
+        final String userId = args['userId'];
+
+        return MessagesView(
+          userId: userId,
+        );
+      } ,
       binding: MessagesBinding(),
     ),
     GetPage(
@@ -177,7 +204,6 @@ class AppPages {
       page: () => ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
     ),
-   
     GetPage(
       name: _Paths.CALENDAR,
       page: () => const CalendarView(),

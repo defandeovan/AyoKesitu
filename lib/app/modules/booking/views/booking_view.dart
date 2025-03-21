@@ -51,8 +51,8 @@ class BookingView extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Image.asset(
-                'assets/img/Mask Group.png',
+              Image.network(
+                destination.img,
                 height: 400,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -60,13 +60,13 @@ class BookingView extends StatelessWidget {
               Positioned(
                 top: 40,
                 left: 10,
+                child: GestureDetector(onTap: (){
+                  Get.back();
+                },
                 child: Icon(Icons.arrow_back, color: Colors.white),
+                ),
               ),
-              Positioned(
-                top: 40,
-                right: 10,
-                child: Icon(Icons.favorite_border, color: Colors.white),
-              ),
+             
             ],
           ),
           Padding(

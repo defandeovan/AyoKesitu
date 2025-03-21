@@ -49,6 +49,8 @@ class OfflineDataSyncService {
           price: double.parse(destination['price']),
           selfCheckIn: destination['selfCheckIn'],
           cleanAccommodation: destination['cleanAccommodation'],
+         img: destination['img']
+
         );
       } catch (e) {
        

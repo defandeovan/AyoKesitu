@@ -32,7 +32,7 @@ class _AddDestViewState extends State<AddDestView> {
   final OfflineDataSyncService _offlineDataSyncService =
       OfflineDataSyncService();
   bool _isLoading = false;
-
+ String? imageUrl;
   bool _validateAmenities() {
     for (var controller in _amenitiesControllers) {
       if (controller.text.isEmpty) return false;
@@ -50,6 +50,7 @@ class _AddDestViewState extends State<AddDestView> {
         price: double.parse(_priceController.text),
         selfCheckIn: _selfCheckInController.text,
         cleanAccommodation: _cleanAccommodationController.text,
+            img: imageUrl ?? '',
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -96,21 +97,21 @@ class _AddDestViewState extends State<AddDestView> {
   Future<void> _uploadStoredData() async {
     final storedData = _getStorage.read('destination');
     if (storedData != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-          content: Text('Data sedang diupload ke Firebase Firestore!')),
-    );
-  
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Data sedang diupload ke Firebase Firestore!')),
+      );
+
       try {
         await _databaseService.addDestination(
-          name: storedData['name'],
-          location: storedData['location'],
-          rating: double.parse(storedData['rating']),
-          amenities: List<String>.from(storedData['amenities']),
-          price: double.parse(storedData['price']),
-          selfCheckIn: storedData['selfCheckIn'],
-          cleanAccommodation: storedData['cleanAccommodation'],
-        );
+            name: storedData['name'],
+            location: storedData['location'],
+            rating: double.parse(storedData['rating']),
+            amenities: List<String>.from(storedData['amenities']),
+            price: double.parse(storedData['price']),
+            selfCheckIn: storedData['selfCheckIn'],
+            cleanAccommodation: storedData['cleanAccommodation'],
+            img: storedData['img']);
         await _getStorage.remove('destination');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -127,17 +128,16 @@ class _AddDestViewState extends State<AddDestView> {
   @override
   void initState() {
     super.initState();
-   _connectivity.onConnectivityChanged.listen((connectivityResult) {
-  if (connectivityResult.contains(ConnectivityResult.none)) {
-  } else {
-    _uploadStoredData();
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //       content: Text('Data sedang diupload ke Firebase Firestore!')),
-    // );
-  }
-});
-
+    _connectivity.onConnectivityChanged.listen((connectivityResult) {
+      if (connectivityResult.contains(ConnectivityResult.none)) {
+      } else {
+        _uploadStoredData();
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //       content: Text('Data sedang diupload ke Firebase Firestore!')),
+        // );
+      }
+    });
 
     _offlineDataSyncService.startConnectivityListener(context);
   }
@@ -201,6 +201,7 @@ class _AddDestViewState extends State<AddDestView> {
               price: double.parse(destinationData['price']),
               selfCheckIn: destinationData['selfCheckIn'],
               cleanAccommodation: destinationData['cleanAccommodation'],
+              img: destinationData['img'],
             );
 
             ScaffoldMessenger.of(context).showSnackBar(

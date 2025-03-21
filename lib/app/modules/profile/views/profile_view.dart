@@ -11,28 +11,31 @@ import 'package:project_flutter/app/routes/app_pages.dart';
 
 class ProfileView extends StatefulWidget {
   final String userId;
-  const ProfileView({super.key, required this.userId});
+
+  const ProfileView({
+    super.key,
+    required this.userId,
+  });
+
   @override
-  // ignore: library_private_types_in_public_api
   _ProfileViewState createState() => _ProfileViewState();
 }
 
 class _ProfileViewState extends State<ProfileView> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   Map<String, dynamic>? userData;
-   final GetStorage storage = GetStorage();
+  final GetStorage storage = GetStorage();
   bool isLoading = true;
-
- File? _profileImage;
+  String? imageUrl;
+  File? _profileImage;
 
   @override
   void initState() {
     super.initState();
-    // Ambil data pengguna saat halaman diinisialisasi
-     WidgetsBinding.instance.addPostFrameCallback((_) {
-    getUserData();
-    loadProfileImage();
-  });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getUserData();
+      loadProfileImage();
+    });
   }
 
   Future<void> getUserData() async {
@@ -41,25 +44,26 @@ class _ProfileViewState extends State<ProfileView> {
           await db.collection('users').doc(widget.userId).get();
       if (snapshot.exists) {
         setState(() {
-          userData = snapshot.data(); // Simpan data pengguna
-          isLoading = false; // Set loading ke false
+          userData = snapshot.data();
+          imageUrl = userData?['img'];
+          print("imgurl: ${userData?['img']}");
+          isLoading = false;
         });
       } else {
-        // Handle jika pengguna tidak ditemukan
         setState(() {
           isLoading = false;
         });
       }
     } catch (e) {
-      // Tangani kesalahan
       if (kDebugMode) {
         print("Error fetching user data: $e");
       }
       setState(() {
-        isLoading = false; // Set loading ke false meskipun terjadi error
+        isLoading = false;
       });
     }
   }
+
   void loadProfileImage() {
     String? imagePath = storage.read<String>('profile_image');
     if (imagePath != null && File(imagePath).existsSync()) {
@@ -68,50 +72,133 @@ class _ProfileViewState extends State<ProfileView> {
       });
     }
   }
+
+  Future<void> refreshData() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      getUserData();
+      loadProfileImage();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: RefreshIndicator(
+        onRefresh: refreshData,
+        child: Center(
           child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Your Profile",
-              style: TextStyle(
-                color: Color.fromARGB(255, 0, 0, 0),
-                fontFamily: 'WorkSans',
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Your Profile",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontFamily: 'WorkSans',
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                ClipOval(
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    color: Colors.grey[300],
+                    child: userData?['img'] != null
+                        ? Image.network(
+                            userData!['img'],
+                            fit: BoxFit.cover,
+                          )
+                        : SvgPicture.asset(
+                            'assets/img/profile.svg',
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '${userData?['first_name'] ?? '...'} ${userData?['last_name'] ?? ''}',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'WorkSans',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                Text(
+                  '${userData?['email'] ?? 'Loading...'}',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'WorkSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildProfileOption(
+                  iconPath: 'assets/img/icons profile.svg',
+                  title: 'Profile',
+                  onTap: () {
+                    Get.to(EditprofileView(userId: widget.userId));
+                  },
+                ),
+                const SizedBox(height: 20),
+                _buildProfileOption(
+                  iconPath: 'assets/img/Check circle.svg',
+                  title: 'Your Order',
+                  onTap: () {
+                    // Get.to(YourOrderPage());
+                  },
+                ),
+                const SizedBox(height: 20),
+                _buildProfileOption(
+                  iconPath: 'assets/img/Credit card.svg',
+                  title: 'Payment Method',
+                  onTap: () {
+                    // Get.toNamed(Routes.PAY_METHOD);
+                  },
+                ),
+                const SizedBox(height: 20),
+                _buildProfileOption(
+                  iconPath: 'assets/img/Settings.svg',
+                  title: 'Setting',
+                  onTap: () {
+                    Get.toNamed(Routes.SETTING);
+                  },
+                ),
+                const SizedBox(height: 100),
+              ],
             ),
-            ClipOval(
-              child: _profileImage != null
-                  ? Image.file(
-                      _profileImage!,
-                      width: 130,
-                      height: 130,
-                      fit: BoxFit.cover,
-                    )
-                  : SvgPicture.asset(
-                      'assets/img/profile.svg',
-                      width: 130,
-                      height: 130,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-            Text(
-              '${userData?['first_name'] ?? 'Loading ...'} ${userData?['last_name'] ?? ''}',
-              style: const TextStyle(
-                color: Colors.black,
-                fontFamily: 'WorkSans',
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+          ),
+        ),
+      ),
+    );
+  }
 
+  Widget _buildProfileOption({
+    required String iconPath,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 295,
+        height: 80,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black.withOpacity(0.2)),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SvgPicture.asset(iconPath, width: 40, height: 40),
+            ),
+            const SizedBox(width: 20),
             Text(
-              '${userData?['email'] ?? 'Loading...'}',
+              title,
               style: const TextStyle(
                 color: Colors.black,
                 fontFamily: 'WorkSans',
@@ -119,256 +206,15 @@ class _ProfileViewState extends State<ProfileView> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                //Navigasi ke halaman edit profil
-                Get.to(EditprofileView(
-                    userId: widget.userId,
-                    firstName: userData?['first_name'] ?? '',
-                    lastName: userData?['last_name'] ?? '',
-                    email: userData?['email'] ?? '',
-                    phoneNumber:
-                        userData?['telp'] ?? '' // Perbaiki email di sini
-                    // Menambahkan lokasi
-                    ));
-              },
-              child: Container(
-                width: 295,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.2),
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/icons profile.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Profile',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'WorkSans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Chevron right.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SvgPicture.asset('assets/img/Chevron right.svg',
+                  width: 40, height: 40),
             ),
-            SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                Get.to(YourOrderPage());
-              },
-              child: Container(
-                width: 295,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.2),
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Check circle.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Your Order',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'WorkSans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Chevron right.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(Routes.PAY_METHOD);
-              },
-              child: Container(
-                width: 295,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.2),
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Credit card.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Payment Method',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'WorkSans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Chevron right.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(Routes.SETTING);
-              },
-              child: Container(
-                width: 295,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.2),
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Settings.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    const Text(
-                      'Setting',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'WorkSans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Chevron right.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(Routes.ADD_DEST);
-              },
-              child: Container(
-                width: 295,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.2),
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Settings.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    const Text(
-                      'Add Product',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'WorkSans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        'assets/img/Chevron right.svg',
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 100),
-
           ],
         ),
-      )),
+      ),
     );
   }
 }

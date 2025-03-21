@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:googleapis/secretmanager/v1.dart';
 import 'package:project_flutter/app/data/Bukit.dart';
 import 'package:project_flutter/app/data/Danau.dart';
 import 'package:project_flutter/app/data/Hutan.dart';
@@ -14,6 +16,9 @@ import 'package:project_flutter/app/modules/messages/views/messages_view.dart';
 import 'package:project_flutter/app/modules/profile/views/profile_view.dart';
 import 'package:project_flutter/app/data/Destination.dart';
 import 'package:project_flutter/app/modules/home/controllers/home_controller.dart';
+import 'package:custom_search_bar/custom_search_bar.dart';
+
+
 
 class HomeView extends StatefulWidget {
   final String userId;
@@ -46,10 +51,11 @@ class _HomeViewState extends State<HomeView>
     super.initState();
 
     _tabController = TabController(length: 2, vsync: this);
+    _selectedIndex = Get.arguments?['selectedIndex'] ?? 0;
     _widgetOptions = <Widget>[
       _buildDestinationContent(),
       FavoriteView(),
-      MessagesView(),
+      MessagesView(userId: widget.userId),
       ProfileView(userId: widget.userId), // Placeholder for other tab content
     ];
   }
@@ -58,9 +64,6 @@ class _HomeViewState extends State<HomeView>
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 50),
-          _buildSearchBar(),
-          SizedBox(height: 10),
           const LocationView(),
           SizedBox(height: 10),
           Padding(
@@ -105,11 +108,12 @@ class _HomeViewState extends State<HomeView>
           ),
           Obx(
             () {
-              if (homeController.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              } else if (homeController.destinations.isEmpty) {
-                return Center(child: Text('Tidak ada destinasi.'));
-              }
+              // if (homeController.isLoading.value) {
+              //   return Center(
+              //   child: CircularProgressIndicator());
+              // } else if (homeController.destinations.isEmpty) {
+              //   return Center(child: Text('Tidak ada destinasi.'));
+              // }
               var destinations = homeController.destinations;
 
               return Column(
@@ -123,7 +127,8 @@ class _HomeViewState extends State<HomeView>
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold)),
                         SizedBox(height: 8),
-                        _buildHorizontalList(destinations),
+                        _buildHorizontalList(
+                            homeController.recommendedDestinations),
                       ],
                     ),
                   ),
@@ -135,7 +140,7 @@ class _HomeViewState extends State<HomeView>
                       children: [
                         Container(
                           // Warna untuk debugging
-                          child: Text("Popular Destinations",
+                          child: Text("All Destinations",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                         ),
@@ -145,9 +150,9 @@ class _HomeViewState extends State<HomeView>
                                 ? constraints.maxHeight
                                 : 100000;
                             return Container(
-                              constraints: BoxConstraints(maxHeight: maxHeight),
-                              child: _buildPopularList(destinations),
-                            );
+                                constraints:
+                                    BoxConstraints(maxHeight: maxHeight),
+                                child: _buildPopularList(destinations));
                           },
                         ),
                       ],
@@ -195,14 +200,14 @@ class _HomeViewState extends State<HomeView>
   }
 
   // Horizontal list for recommended destinations
-  Widget _buildHorizontalList(List<Destination> destinations) {
+  Widget _buildHorizontalList(List<Destination> RecomendationtsDestinations) {
     return SizedBox(
       height: 220,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: destinations.length,
+        itemCount: RecomendationtsDestinations.length,
         itemBuilder: (context, index) {
-          var destination = destinations[index];
+          var destination = RecomendationtsDestinations[index];
           return GestureDetector(
             onTap: () {
               Navigator.push(
@@ -224,8 +229,8 @@ class _HomeViewState extends State<HomeView>
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        'assets/img/Ratenggaro-village-in-Sumba-Explore-Sumba-island-villages-in-Indonesia-10.jpg',
+                      child: Image.network(
+                        destination.img,
                         fit: BoxFit.cover,
                         width: 200,
                         height: 220,
@@ -283,21 +288,19 @@ class _HomeViewState extends State<HomeView>
                     Positioned(
                       top: 10,
                       right: 10,
-                      child: GestureDetector(
-                        onTap: () {
-                          homeController.toggleFavorite(destination);
-                        },
-                        child: Obx(() {
-                          bool isFavorite =
-                              homeController.favorites.contains(destination);
-                          return SvgPicture.asset(
-                            'assets/img/favorite.svg',
-                            width: 24,
-                            height: 24,
-                            color: isFavorite ? Colors.red : Colors.grey,
-                          );
-                        }),
-                      ),
+                      child: Obx(() {
+                        bool isFav = homeController.isFavorite(destination.id);
+                        return GestureDetector(
+                          onTap: () {
+                            homeController.toggleFavorite(destination);
+                          },
+                          child: Icon(
+                            Icons.favorite,
+                            color: isFav ? Colors.red : Colors.grey,
+                            size: 24,
+                          ),
+                        );
+                      }),
                     ),
                   ],
                 ),
@@ -310,14 +313,14 @@ class _HomeViewState extends State<HomeView>
   }
 
   // Vertical list for popular destinations
-  Widget _buildPopularList(List<Destination> destinations) {
+  Widget _buildPopularList(List<Destination> Destinations) {
     return Flexible(
         child: ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: destinations.length,
+      itemCount: Destinations.length,
       itemBuilder: (context, index) {
-        var destination = destinations[index];
+        var destination = Destinations[index];
         return GestureDetector(
           onTap: () {
             Navigator.push(
@@ -328,7 +331,7 @@ class _HomeViewState extends State<HomeView>
             );
           },
           child: Card(
-            margin: EdgeInsets.zero,
+            margin: EdgeInsets.only(bottom: 16),
             child: Container(
               width: 355,
               height: 160,
@@ -348,8 +351,9 @@ class _HomeViewState extends State<HomeView>
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      'assets/img/lombok.jpg', // Gantilah dengan path gambar destinasi dari data
+                    child: Image.network(
+                      destination
+                          .img, // Gantilah dengan path gambar destinasi dari data
                       fit: BoxFit.cover,
                       width: 111,
                       height: 135,
@@ -366,8 +370,25 @@ class _HomeViewState extends State<HomeView>
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
                             Spacer(),
-                            SvgPicture.asset('assets/img/favorite.svg',
-                                width: 24, height: 24),
+                            GestureDetector(
+                              onTap: () {
+                                homeController.toggleFavorite(destination);
+                              },
+                              child: Obx(() {
+                                bool isFav =
+                                    homeController.isFavorite(destination.id);
+                                return GestureDetector(
+                                  onTap: () {
+                                    homeController.toggleFavorite(destination);
+                                  },
+                                  child: Icon(
+                                    Icons.favorite,
+                                    color: isFav ? Colors.red : Colors.grey,
+                                    size: 24,
+                                  ),
+                                );
+                              }),
+                            ),
                           ],
                         ),
                         SizedBox(height: 4),
@@ -413,8 +434,267 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
+    // var screensize = MediaQuery.of(context).size;
+    // if(screensize.width > oneColumnLayout){
+
+    // }else{
+
+    // }
     return Scaffold(
-      body: _widgetOptions[_selectedIndex],
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          if (_selectedIndex == 0) {
+            return [
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                title: PreferredSize(
+                  preferredSize: const Size(double.infinity, 50.0),
+                  child: AppBar(
+                    elevation: 0.0,
+                    automaticallyImplyLeading: false,
+                    // title: const Text('AYO KESITU'),
+                    actions: [
+                      Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: InkWell(
+                          // child: const Icon(Icons.close),
+                          child: Row(children: [
+                            Container(
+                                padding: const EdgeInsets.all(1),
+                                width: 280,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    border: Border.all(
+                                        width: 2.0,
+                                        color: const Color.fromARGB(
+                                            255, 0, 0, 0))),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset('assets/img/Search.svg'),
+                                    SizedBox(
+                                      width: 3,
+                                    ),
+                                    Text('Search Destination')
+                                  ],
+                                )),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MessagesView(userId: widget.userId,)),
+                                );
+                              },
+                              child: SvgPicture.asset(
+                                'assets/img/message-circle.svg',
+                                width: 40,
+                              ),
+                              // Tanpa titik setelah asset
+                            )
+                          ]),
+                          onTap: () =>
+                              showSearchForCustomiseSearchDelegate<Destination>(
+                            context: context,
+                            delegate: SearchScreen<Destination>(
+                              itemStartsWith: true,
+                              hintText: 'search here',
+                              items: homeController.destinations,
+                              filter: (destination) => [destination.name],
+                              itemBuilder: (destination) => GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          BookingView(destination: destination),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  margin: EdgeInsets.only(bottom: 16),
+                                  child: Container(
+                                    width: 355,
+                                    height: 160,
+                                    // margin: EdgeInsets.only(bottom: 16),
+                                    padding: EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.4),
+                                            blurRadius: 4,
+                                            offset: Offset(0, 4)),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: Image.network(
+                                            destination
+                                                .img, // Gantilah dengan path gambar destinasi dari data
+                                            fit: BoxFit.cover,
+                                            width: 111,
+                                            height: 135,
+                                          ),
+                                        ),
+                                        SizedBox(width: 16),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(destination.name,
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  Spacer(),
+                                                ],
+                                              ),
+                                              SizedBox(height: 4),
+                                              Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      'assets/img/star.svg'),
+                                                  Text('${destination.rating}',
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
+                                              ),
+                                              Text('\$${destination.price}',
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                'Kebersihan Akomodasi: ${destination.cleanAccommodation}',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              failure: const Center(
+                                child: Text('no destinations found'),
+                              ),
+                              appBarBuilder: (
+                                controller,
+                                onSubmitted,
+                                textInputAction,
+                                focusNode,
+                              ) {
+                                return PreferredSize(
+                                  preferredSize:
+                                      const Size(double.infinity, 50.0),
+                                  child: AppBar(
+                                    elevation: 0.0,
+                                    automaticallyImplyLeading: false,
+                                    title: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(0),
+                                          child: Container(
+                                              padding: const EdgeInsets.all(1),
+                                              width: 360,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.0),
+                                                  border: Border.all(
+                                                      width: 2.0,
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 0, 0, 0))),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      'assets/img/Search.svg'),
+                                                  SizedBox(
+                                                    width: 3,
+                                                  ),
+                                                  Expanded(
+                                                    child: TextField(
+                                                        controller: controller,
+                                                        // onSubmitted:
+                                                        //     onSubmitted,
+                                                        textInputAction:
+                                                            textInputAction,
+                                                        focusNode: focusNode,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          hintText:
+                                                              'Search here',
+
+                                                          border:
+                                                              InputBorder.none,
+                                                          fillColor: const Color
+                                                              .fromARGB(
+                                                              255, 67, 49, 49),
+                                                          suffixIcon: controller
+                                                                  .text
+                                                                  .isNotEmpty
+                                                              ? IconButton(
+                                                                  icon: const Icon(
+                                                                      Icons
+                                                                          .close),
+                                                                  onPressed:
+                                                                      () {
+                                                                    controller
+                                                                        .clear(); // Menghapus teks pencarian
+                                                                  },
+                                                                )
+                                                              : null, // Tidak menampilkan ikon jika tidak ada teks
+                                                        ),
+                                                        onChanged: (text) =>
+                                                            setState(() {}),
+                                                        onSubmitted: (query) {
+                                                          print(
+                                                              "Pencarian: $query");
+                                                        }),
+                                                  )
+                                                ],
+                                              )),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ];
+          }
+          return [];
+        },
+        body: _widgetOptions[_selectedIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -424,7 +704,8 @@ class _HomeViewState extends State<HomeView>
               icon: _buildBottomNavItem('assets/img/Heart.svg', 1),
               label: 'favorite'),
           BottomNavigationBarItem(
-              icon: _buildBottomNavItem('assets/img/send_chat.svg', 2), label: ''),
+              icon: _buildBottomNavItem('assets/img/send_chat.svg', 2),
+              label: ''),
           BottomNavigationBarItem(
               icon: _buildBottomNavItem('assets/img/user copy.svg', 3),
               label: ''),

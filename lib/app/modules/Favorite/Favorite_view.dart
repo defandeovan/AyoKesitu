@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_flutter/app/modules/booking/views/booking_view.dart';
 import 'package:project_flutter/app/modules/home/controllers/home_controller.dart';
 import 'package:project_flutter/app/data/Destination.dart';
 
@@ -25,7 +26,6 @@ class FavoriteView extends StatelessWidget {
             itemCount: homeController.favorites.length,
             itemBuilder: (context, index) {
               Destination destination = homeController.favorites[index];
-              
 
               return Card(
                 margin: const EdgeInsets.only(bottom: 16.0),
@@ -35,14 +35,21 @@ class FavoriteView extends StatelessWidget {
                 elevation: 4,
                 child: InkWell(
                   onTap: () {
-                    // Navigasi ke detail destinasi jika diperlukan
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BookingView(destination: destination),
+                      ),
+                    );
                   },
                   child: Container(
                     height: 150,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       image: DecorationImage(
-                        image: AssetImage('assets/img/lombok.jpg'), // Ganti dengan gambar dari data
+                        image: NetworkImage(
+                            destination.img), // Gunakan gambar dari Firestore
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
                           Colors.black.withOpacity(0.3),
@@ -68,7 +75,8 @@ class FavoriteView extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                icon: const Icon(Icons.favorite, color: Colors.red),
+                                icon: const Icon(Icons.favorite,
+                                    color: Colors.red),
                                 onPressed: () {
                                   homeController.toggleFavorite(destination);
                                 },
@@ -91,7 +99,8 @@ class FavoriteView extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              const Icon(Icons.star, size: 16, color: Colors.amber),
+                              const Icon(Icons.star,
+                                  size: 16, color: Colors.amber),
                               const SizedBox(width: 4),
                               Text(
                                 '${destination.rating}',

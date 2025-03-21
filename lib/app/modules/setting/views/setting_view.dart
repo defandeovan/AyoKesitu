@@ -40,7 +40,8 @@ class SettingtView extends StatelessWidget {
                 // Tombol Logout
                 ElevatedButton(
                   onPressed: () {
-                    Get.find<AuthController>().logout(); // Panggil metode logout
+                    Get.find<AuthController>()
+                        .logout(); // Panggil metode logout
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
